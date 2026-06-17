@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>あなたの心の奥にある「本当の願い」発見テスト</title>
+    <style>
+        /* --- 基本デザイン（パステル・ウォームの世界観） --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #FFF9F1; /* 温かいクリーム色のベース */
+            color: #4A3E3E; /* 目に優しいソフトな焦げ茶色 */
+            font-family: "Helvetica Neue", "Segoe UI", "Hiragino Sans", "Meiryo", sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 背景の装飾（オーガニックで柔らかな水彩風グラデーション） */
+        body::before {
+            content: "";
+            position: absolute;
+            top: -10%; left: -10%; width: 60%; height: 60%;
+            background: radial-gradient(circle, rgba(255, 179, 167, 0.25) 0%, transparent 70%);
+            z-index: 1;
+        }
+        body::after {
+            content: "";
+            position: absolute;
+            bottom: -10%; right: -10%; width: 70%; height: 70%;
+            background: radial-gradient(circle, rgba(243, 229, 171, 0.3) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        /* ふんわり浮き出るマシュマロコンテナ */
+        .app-container {
+            width: 100%;
+            max-width: 460px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid #ffffff;
+            border-radius: 32px;
+            padding: 40px 25px;
+            margin: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 15px 35px rgba(212, 173, 165, 0.15);
+        }
+
+        /* 画面切り替えのフェードイン効果 */
+        .screen {
+            display: none;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        .screen.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* タイトルと見出し */
+        h1, h2 {
+            color: #4A3E3E;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-weight: 700;
+        }
+        p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #6D5D5D;
+            margin-bottom: 20px;
+        }
+
+        /* メインボタン（ソフトコーラルピンク） */
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 18px;
+            background-color: #FFB3A7; 
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(255, 179, 167, 0.3);
+            text-decoration: none;
+            margin-top: 15px;
+        }
+        .btn:hover {
+            background-color: #ff9d90;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(255, 179, 167, 0.4);
+        }
+
+        /* 質問用YES/NOボタン（丸みを持たせたホワイト） */
+        .btn-wrap {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .btn-choice {
+            flex: 1;
+            padding: 18px;
+            background: #ffffff;
+            border: 2px solid #FFF0EC;
+            color: #4A3E3E;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+        .btn-choice:hover {
+            background: #FFF5F3;
+            border-color: #FFB3A7;
+            transform: translateY(-1px);
+        }
+
+        /* 進捗バー（パステルピンク） */
+        .progress-container {
+            width: 100%;
+            background: #F0E6DF;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #FFB3A7;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* 診断中の優しく回るサークル */
+        .loader {
+            width: 44px;
+            height: 44px;
+            border: 4px solid #F3E5AB; /* ソフトゴールド */
+            border-top-color: #FFB3A7;
+            border-radius: 50%;
+            margin: 30px auto;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 結果ページのオファーボックス（白背景＋パステルゴールド枠） */
+        .offer-box {
+            border: 2px dashed #F3E5AB;
+            padding: 25px 20px;
+            border-radius: 24px;
+            background: #ffffff;
+            margin-top: 35px;
+            box-shadow: 0 6px 15px rgba(243, 229, 171, 0.1);
+        }
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FFB3A7;
+            margin: 15px 0;
+        }
+        .deadline {
+            color: #DE8F8F;
+            font-weight: bold;
+            font-size: 0.95rem;
+            background: #FFF0EC;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <div id="screen-top" class="screen active">
+        <p style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold; letter-spacing: 1.5px;">【これまでに 1,248 人が体験】</p>
+        <h1 style="margin-top: 5px; font-size: 1.5rem;">あなたの心の奥にある<br>「本当の願い」発見テスト</h1>
+        <p>日々の忙しさの中で、自分の本音を見失っていませんか？20の質問に直感で答えるだけで、あなたの心が本当に求めているメッセージを優しく解き明かします。</p>
+        <button class="btn" onclick="startQuiz()">テストをスタートする</button>
+    </div>
+
+    <div id="screen-quiz" class="screen">
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <p id="question-number" style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold; margin-bottom: 10px;"></p>
+        <h2 id="question-text" style="font-size: 1.2rem; min-height: 90px; display: flex; align-items: center; justify-content: center; font-weight: 500; padding: 0 10px;"></h2>
+        <div class="btn-wrap">
+            <button class="btn-choice" onclick="answer(true)">YES</button>
+            <button class="btn-choice" onclick="answer(false)">NO</button>
+        </div>
+    </div>
+
+    <div id="screen-loading" class="screen">
+        <h2 style="font-size: 1.3rem; font-weight: 500;">あなたの心の本音を<br>そっと読み解いています...</h2>
+        <div class="loader"></div>
+        <p style="font-size: 0.9rem;">深呼吸をして、すこしだけお待ちくださいね。</p>
+    </div>
+
+    <div id="screen-result" class="screen">
+        <p style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold;">本当の願いが見つかりました</p>
+        <h2 id="result-type" style="font-size: 1.5rem; margin-top: 5px; margin-bottom: 15px;"></h2>
+        
+        <p id="result-desc" style="text-align: left; background: #ffffff; padding: 20px; border-radius: 20px; font-size: 0.95rem; border: 1px solid #FFF0EC; box-shadow: 0 4px 10px rgba(0,0,0,0.01);"></p>
+        
+        <div style="margin: 30px 0 20px 0; border-top: 1px dashed #F0E6DF; padding-top: 25px;">
+            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.1rem; margin-bottom: 10px;">あなたがダメなのではありません。</p>
+            <p style="font-size: 0.95rem; margin-bottom: 0;">今まで頑張ってきたからこそ、本音が見えにくくなっているだけです。あなたの中にはすでに願いの種がありますよ。</p>
+        </div>
+
+        <div class="offer-box">
+            <p style="font-weight: bold; color: #4A3E3E; font-size: 1.05rem; letter-spacing: 1px;">＼ LINE登録者様限定特典 ／</p>
+            <p style="font-size: 0.9rem; margin-top: 10px; color: #6D5D5D;">アプリで分かった「あなたの本当の願い」をさらに深く具体的に開花させ、理想の未来へ進むための個別セッションをお届けします。</p>
+            <p style="margin-top: 15px; font-weight: bold;">通常 16,500円の<br><span style="color:#FFB3A7;">【 開運セッション 】</span></p>
+            
+            <div style="margin: 15px 0 10px 0;">
+                <span id="date-placeholder" class="deadline"></span>
+            </div>
+            
+            <div class="price">
+                <span style="font-size: 0.9rem; color: #b5a4a4; text-decoration: line-through; font-weight: normal; margin-right: 5px;">16,500円</span> ➔ 11,111円
+            </div>
+            <p style="font-size: 0.8rem; color: #8D7D7D; margin-bottom: 15px; line-height: 1.6;">※下のボタンからLINEに戻り、トークに「開運」と一言メッセージを送って枠を確保してくださいね。</p>
+            
+            <a href="https://line.me/R/ti/p/@YOUR_LINE_ID" class="btn">LINEに戻って特別価格で申し込む</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- 20問の質問データとタイプ紐付け ---
+    const questions = [
+        { text: "人に頼まれると断りにくい", type: 1 },
+        { text: "自分の気持ちより相手を優先することが多い", type: 1 },
+        { text: "本音を話すのが苦手", type: 1 },
+        { text: "自分の「好き・嫌い」をハッキリ言うのが怖い", type: 1 },
+        { text: "頑張っているのに報われないと感じることがある", type: 1 },
+        
+        { text: "やりたいと思っても動けないことがある", type: 2 },
+        { text: "失敗するくらいなら挑戦しない方がいいと思う", type: 2 },
+        { text: "周りの人がキラキラして見えて、焦りを感じる", type: 2 },
+        { text: "周りからは頑張っていると言われる（けど自分では認められない）", type: 2 },
+        { text: "もっと豊かなりたいと思う反面、自分には無理だと思う", type: 2 },
+        
+        { text: "本当にやりたいことを聞かれると答えに迷う", type: 3 },
+        { text: "誰かに「本当はどうしたいの？」と聞かれると答えに詰まる", type: 3 },
+        { text: "人生このままでいいのかなと思うことがある", type: 3 },
+        { text: "行動するときに、自分の気持ちより「損得」や「正解」を考えてしまう", type: 3 },
+        { text: "自分にはまだ何かできることがある気がする", type: 3 },
+        
+        { text: "自分のためにお金を使うと少し罪悪感がある", type: 4 },
+        { text: "お金の不安が頭から離れない", type: 4 },
+        { text: "豊かになっている自分を想像すると違和感がある", type: 4 },
+        { text: "プレゼントや褒め言葉を素直に受け取るのが苦手（遠慮してしまう）", type: 4 },
+        { text: "「休むこと」に罪悪感があり、常に何かしていないと落ち着かない", type: 4 }
+    ];
+
+    // --- 各タイプの診断結果テキスト ---
+    const resultsData = {
+        1: {
+            title: "🌸 我慢しすぎタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自由）</span>",
+            desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。<br><br>でも、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。<br><br>今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。"
+        },
+        2: {
+            title: "🌸 自己否定タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：挑戦）</span>",
+            desc: "「自分には無理かもしれない」「失敗したらどうしよう」と、一歩踏み出す前にブレーキをかけてしまうことが多いかもしれませんね。<br><br>それは、あなたが自分の人生をそれだけ真剣に考えている証拠。決してあなたが弱いからではありません。あなたが本当に求めているのは『自分の可能性を信じて、新しく挑戦すること』です。<br><br>大きな一歩でなくて大丈夫。あなたの心の中にある「やってみたい」という小さな火を、大切に育てていきましょう。"
+        },
+        3: {
+            title: "🌸 迷子タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自分の本音を知る）</span>",
+            desc: "周りの意見や「こうあるべき」という正論に合わせているうちに、自分が本当はどうしたいのか分からなくなってしまっていませんか？<br><br>ナビが壊れたような不安を感じるかもしれませんが、焦らなくて大丈夫です。本当の願いが消えたわけではなく、今は一時的に『たくさんの情報に埋もれて見えなくなっているだけ』。<br><br>まずは「今日何を食べたいか」「どっちの服を着たいか」といった、日々の小さな選択を自分の感覚だけで選ぶことから、本音のリハビリを始めてみましょう。"
+        },
+        4: {
+            title: "🌸 豊かさ拒否タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：豊かさ・受取）</span>",
+            desc: "お金や将来への不安が強かったり、人から何かしてもらったときに「申し訳ない」と罪悪感を持ってしまっていませんか？<br><br>あなたは責任感が強く、自立している素敵な方です。だからこそ、受け取ることへの心のブロックが働いているのかもしれません。あなたの本当の願いは『もっと安心して、愛や豊かさを受け取ること』です。<br><br>豊かさは、回ってくるものです。まずは誰かからの褒め言葉を、遠慮せずに「ありがとう」と笑顔で受け取ることから始めてみませんか？"
+        }
+    };
+
+    let currentQuestionIndex = 0;
+    let scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
+
+    function changeScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+    }
+
+    function startQuiz() {
+        currentQuestionIndex = 0;
+        scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
+        changeScreen('screen-quiz');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const q = questions[currentQuestionIndex];
+        document.getElementById('question-number').innerText = `質問 ${currentQuestionIndex + 1} / 20`;
+        document.getElementById('question-text').innerText = q.text;
+        
+        const progress = ((currentQuestionIndex) / questions.length) * 100;
+        document.getElementById('progress-bar').style.width = `${progress}%`;
+    }
+
+    function answer(isYes) {
+        if (isYes) {
+            const type = questions[currentQuestionIndex].type;
+            scores[type]++;
+        }
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+            showQuestion();
+        } else {
+            changeScreen('screen-loading');
+            calculateDeadline();
+            
+            setTimeout(() => {
+                showResult();
+            }, 2500); 
+        }
+    }
+
+    function showResult() {
+        let maxType = 1;
+        let maxScore = scores[1];
+        
+        for (let i = 2; i <= 4; i++) {
+            if (scores[i] > maxScore) {
+                maxScore = scores[i];
+                maxType = i;
+            }
+        }
+
+        const result = resultsData[maxType];
+        document.getElementById('result-type').innerHTML = result.title;
+        document.getElementById('result-desc').innerHTML = result.desc;
+        
+        changeScreen('screen-result');
+    }
+
+    function calculateDeadline() {
+        const now = new Date();
+        now.setDate(now.getDate() + 5); 
+        const month = now.getMonth() + 1;
+        const date = now.getDate();
+        const weeks = ['日', '月', '火', '水', '木', '金', '土'];
+        const week = weeks[now.getDay()];
+        
+        document.getElementById('date-placeholder').innerText = `期間限定・${month}月${date}日（${week}）まで`;
+    }
+</script>
+
+</body>
+</html>
