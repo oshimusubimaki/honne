@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>20の質問で分かる本当の願い発見テスト</title>
+    <title>20の質問で分かる心の奥にある本音発見テスト</title>
     <style>
         /* --- 基本デザイン（パステル・ウォームの世界観） --- */
         * {
@@ -131,7 +131,7 @@
             box-shadow: 0 12px 25px rgba(255, 179, 167, 0.4);
         }
 
-        /* 新設：結果をシェアするボタン（淡いパステルブルー・ミント調で差別化） */
+        /* 結果をシェアするボタン（淡いパステルブルー・ミント調で差別化） */
         .btn-share {
             display: inline-block;
             width: 100%;
@@ -214,7 +214,7 @@
     <div id="screen-top" class="screen active">
         <h1 style="font-size: 1.5rem; line-height: 1.6; margin-bottom: 25px;">
             <span style="font-size: 1.1rem; font-weight: normal; color: #FFB3A7; display: block; margin-bottom: 5px;">20の質問で分かる</span>
-            本当の願い発見テスト
+            心の奥にある本音発見テスト
         </h1>
         <p style="text-align: center; font-size: 0.95rem; line-height: 1.8; color: #6D5D5D;">
             日々の忙しさの中で、<br>
@@ -285,7 +285,7 @@
         { text: "失敗するくらいなら挑戦しない方がいいと思う", type: 2 },
         { text: "周りの人がキラキラして見えて、焦りを感じる", type: 2 },
         { text: "周りからは頑張っていると言われる（けど自分では認められない）", type: 2 },
-        { text: "もっと豊かなりたいと思う反面、自分には無理だと思う", type: 2 },
+        { text: "もっと豊かになりたいと思う反面、自分には無理だと思う", type: 2 },
         
         { text: "本当にやりたいことを聞かれると答えに迷う", type: 3 },
         { text: "誰かに「本当はどうしたいの？」と聞かれると答えに詰まる", type: 3 },
@@ -304,7 +304,7 @@
     const resultsData = {
         1: {
             title: "🌸 我慢しすぎタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自由）</span>",
-            desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。 shadow、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。",
+            desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。でも、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。",
             shareName: "我慢しすぎタイプ（本当の願い：自由）"
         },
         2: {
@@ -326,7 +326,7 @@
 
     let currentQuestionIndex = 0;
     let scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
-    let finalType = 1; // シェア用に現在のタイプを保持する変数
+    let finalType = 1;
 
     function changeScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -379,7 +379,7 @@
             }
         }
 
-        finalType = maxType; // シェア関数用に保存
+        finalType = maxType;
         const result = resultsData[maxType];
         document.getElementById('result-type').innerHTML = result.title;
         document.getElementById('result-desc').innerText = result.desc;
@@ -387,13 +387,11 @@
         changeScreen('screen-result');
     }
 
-    // --- 結果をシェアする（X/旧Twitterへの投稿機能） ---
     function shareResult() {
         const typeName = resultsData[finalType].shareName;
-        const text = encodeURIComponent(`「20の質問で分かる本当の願い発見テスト」の診断結果は【 ${typeName} 】でした！\n#本当の願い発見テスト \n`);
+        const text = encodeURIComponent(`「20の質問で分かる心の奥にある本音発見テスト」の診断結果は【 ${typeName} 】でした！\n#心の奥にある本音発見テスト \n`);
         const url = encodeURIComponent(window.location.href);
         
-        // X (Twitter) のシェア用URLを開く
         window.open(`https://twitter.com/share?text=${text}&url=${url}`, '_blank');
     }
 </script>
