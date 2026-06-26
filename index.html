@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>あなたの心の奥にある「本当の願い」発見テスト</title>
+    <title>20の質問で分かる本当の願い発見テスト</title>
     <style>
         /* --- 基本デザイン（パステル・ウォームの世界観） --- */
         * {
@@ -108,7 +108,7 @@
             transform: translateY(-1px);
         }
 
-        /* 「もう一度診断する」・「スタート」用ボタン（ふんわりコーラルピンク） */
+        /* メインボタン（LINE報告・スタート用：ふんわりコーラルピンク） */
         .btn {
             display: inline-block;
             width: 100%;
@@ -129,6 +129,27 @@
             background-color: #ff9d90;
             transform: translateY(-2px);
             box-shadow: 0 12px 25px rgba(255, 179, 167, 0.4);
+        }
+
+        /* サブボタン（「もう一度診断する」用：淡いベージュ系） */
+        .btn-sub {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            background-color: #F5EBE6;
+            color: #6D5D5D;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .btn-sub:hover {
+            background-color: #EDE2DC;
+            color: #4A3E3E;
         }
 
         /* 進捗バー（パステルピンク） */
@@ -167,13 +188,23 @@
 
 <div class="app-container">
 
+    <!-- ① トップ画面（ご指定のテキスト・改行位置に修正しました） -->
     <div id="screen-top" class="screen active">
-        <p style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold; letter-spacing: 1.5px;">【これまでに 1,248 人が体験】</p>
-        <h1 style="margin-top: 5px; font-size: 1.5rem;">あなたの心の奥にある<br>「本当の願い」発見テスト</h1>
-        <p>日々の忙しさの中で、自分の本音を見失っていませんか？20の質問に直感で答えるだけで、あなたの心が本当に求めているメッセージを優しく解き明かします。</p>
-        <button class="btn" style="margin-top:15px;" onclick="startQuiz()">テストをスタートする</button>
+        <h1 style="font-size: 1.5rem; line-height: 1.6; margin-bottom: 25px;">
+            <span style="font-size: 1.1rem; font-weight: normal; color: #FFB3A7; display: block; margin-bottom: 5px;">20の質問で分かる</span>
+            本当の願い発見テスト
+        </h1>
+        <p style="text-align: center; font-size: 0.95rem; line-height: 1.8; color: #6D5D5D;">
+            日々の忙しさの中で、<br>
+            自分の本音を見失っていませんか？<br>
+            20の質問に直感で答えるだけで、<br>
+            あなたの心が本当に求めているメッセージを<br>
+            優しく解き明かします。
+        </p>
+        <button class="btn" style="margin-top: 20px;" onclick="startQuiz()">テストをスタートする</button>
     </div>
 
+    <!-- ② 質問回答画面 -->
     <div id="screen-quiz" class="screen">
         <div class="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
@@ -186,24 +217,32 @@
         </div>
     </div>
 
+    <!-- ③ 診断中画面 -->
     <div id="screen-loading" class="screen">
         <h2 style="font-size: 1.3rem; font-weight: 500;">あなたの心の本音を<br>そっと読み解いています...</h2>
         <div class="loader"></div>
         <p style="font-size: 0.9rem;">深呼吸をして、すこしだけお待ちくださいね。</p>
     </div>
 
+    <!-- ④ 結果画面 -->
     <div id="screen-result" class="screen">
         <p style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold;">本当の願いが見つかりました</p>
         <h2 id="result-type" style="font-size: 1.5rem; margin-top: 5px; margin-bottom: 15px;"></h2>
         
+        <!-- タイプ別個別メッセージ -->
         <p id="result-desc" style="text-align: left; background: #ffffff; padding: 20px; border-radius: 20px; font-size: 0.95rem; border: 1px solid #FFF0EC; box-shadow: 0 4px 10px rgba(0,0,0,0.01);"></p>
         
+        <!-- 共通の安心メッセージ -->
         <div style="margin: 30px 0 20px 0; border-top: 1px dashed #F0E6DF; padding-top: 25px;">
-            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.1rem; margin-bottom: 10px;">あなたがダメなのではありません。</p>
+            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.1rem; margin-bottom: 10px;">あなたがダメのではありません。</p>
             <p style="font-size: 0.95rem; margin-bottom: 0;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
         </div>
 
-        <button class="btn" onclick="startQuiz()">もう一度診断する</button>
+        <!-- LINEで結果を報告するボタン -->
+        <a href="https://ctplsb9d.autosns.app/addfriend/s/iCa1T40OVF/@qkm8011m" class="btn">LINEで結果を報告する</a>
+
+        <!-- もう一度診断するボタン -->
+        <button class="btn-sub" onclick="startQuiz()">もう一度診断する</button>
     </div>
 
 </div>
@@ -303,7 +342,7 @@
 
     function showResult() {
         let maxType = 1;
-        let maxScore = scores[1];
+        let maxScore = scores[1];MaxScore
         
         for (let i = 2; i <= 4; i++) {
             if (scores[i] > maxScore) {
