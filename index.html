@@ -1,4 +1,4 @@
-å√<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -21,6 +21,7 @@
             align-items: center;
             overflow-x: hidden;
             position: relative;
+            padding: 20px 0;
         }
 
         /* 背景の装飾（オーガニックで柔らかな水彩風グラデーション） */
@@ -48,7 +49,7 @@
             -webkit-backdrop-filter: blur(10px);
             border: 2px solid #ffffff;
             border-radius: 32px;
-            padding: 40px 25px;
+            padding: 35px 25px;
             margin: 20px;
             text-align: center;
             position: relative;
@@ -182,6 +183,20 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* 結果メッセージ表示用ボックス（スクロール対応） */
+        .result-box {
+            text-align: left;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            border: 1px solid #FFF0EC;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.01);
+            max-height: 280px; /* 長い文章でもはみ出さないように制限 */
+            overflow-y: auto;  /* 必要に応じてボックス内スクロールを許可 */
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
 <body>
@@ -229,16 +244,16 @@
         <p style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold;">本当の願いが見つかりました</p>
         <h2 id="result-type" style="font-size: 1.5rem; margin-top: 5px; margin-bottom: 15px;"></h2>
         
-        <!-- タイプ別個別メッセージ -->
-        <p id="result-desc" style="text-align: left; background: #ffffff; padding: 20px; border-radius: 20px; font-size: 0.95rem; border: 1px solid #FFF0EC; box-shadow: 0 4px 10px rgba(0,0,0,0.01);"></p>
+        <!-- タイプ別個別メッセージエリア -->
+        <div id="result-desc" class="result-box"></div>
         
         <!-- 共通の安心メッセージ -->
-        <div style="margin: 30px 0 20px 0; border-top: 1px dashed #F0E6DF; padding-top: 25px;">
-            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.1rem; margin-bottom: 10px;">あなたがダメなのではありません。</p>
-            <p style="font-size: 0.95rem; margin-bottom: 0;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
+        <div style="margin: 25px 0 15px 0; border-top: 1px dashed #F0E6DF; padding-top: 20px;">
+            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.05rem; margin-bottom: 8px;">あなたがダメなのではありません。</p>
+            <p style="font-size: 0.9rem; margin-bottom: 0; line-height: 1.6;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
         </div>
 
-        <!-- LINEで結果を報告するボタン（URLを修正しました） -->
+        <!-- LINEで結果を報告するボタン -->
         <a href="https://ctplsb9d.autosns.app/line" class="btn">LINEで結果を報告する</a>
 
         <!-- もう一度診断するボタン -->
@@ -279,19 +294,19 @@
     const resultsData = {
         1: {
             title: "🌸 我慢しすぎタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自由）</span>",
-            desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。<br><br>でも、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。<br><br>今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。"
+            desc: "あなたはこれまで、<br>周りの人の気持ちを最優先にして、<br>場の調和を保ってきたとても優しい方ですね。<br><br>でも、その優しさの裏で、<br>自分の「こうしたい」という声を<br>ずっと閉じ込めていませんでしたか？<br><br>あなたが本当に求めているのは<br>『もっと自由に、自分らしく生きること』です。<br><br>今日からは、<br>ほんの少しだけ自分を一番に<br>甘やかしてあげてください。<br>あなたが自由になることは、<br>誰も責めたりしませんよ。"
         },
         2: {
             title: "🌸 自己否定タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：挑戦）</span>",
-            desc: "「自分には無理かもしれない」「失敗したらどうしよう」と、一歩踏み出す前にブレーキをかけてしまうことが多いかもしれませんね。<br><br>それは、あなたが自分の人生をそれだけ真剣に考えている証拠。決してあなたが弱いからではありません。あなたが本当に求めているのは『自分の可能性を信じて、新しく挑戦すること』です。<br><br>大きな一歩でなくて大丈夫。あなたの心の中にある「やってみたい」という小さな火を、大切に育てていきましょう。"
+            desc: "「自分には無理かもしれない」<br>「失敗したらどうしよう」と、<br>一歩踏み出す前にブレーキをかけてしまうことが<br>多いかもしれませんね。<br><br>それは、<br>あなたが自分の人生をそれだけ真剣に考えている証拠。<br>決してあなたが弱いからではありません。<br>あなたが本当に求めているのは<br>『自分の可能性を信じて、新しく挑戦すること』です。<br><br>大きな一歩でなくて大丈夫。<br>あなたの心の中にある「やってみたい」という<br>小さな火を、大切に育てていきましょう。"
         },
         3: {
             title: "🌸 迷子タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自分の本音を知る）</span>",
-            desc: "周りの意見や「こうあるべき」という正論に合わせているうちに、自分が本当はどうしたいのか分からなくなってしまっていませんか？<br><br>ナビが壊れたような不安を感じるかもしれませんが、焦らなくて大丈夫です。本当の願いが消えたわけではなく、今は一時的に『たくさんの情報に埋もれて見えなくなっているだけ』。<br><br>まずは「今日何を食べたいか」「どっちの服を着たいか」といった、日々の小さな選択を自分の感覚だけで選ぶことから、本音のリハビリを始めてみましょう。"
+            desc: "周りの意見や「こうあるべき」という正論に<br>合わせているうちに、<br>自分が本当はどうしたいのか<br>分からなくなってしまっていませんか？<br><br>ナビが壊れたような不安を感じるかもしれませんが、<br>焦らなくて大丈夫です。<br>本当の願いが消えたわけではなく、<br>今は一時的に<br>『たくさんの情報に埋もれて見えなくなっているだけ』。<br><br>まずは「今日何を食べたいか」<br>「どっちの服を着たいか」といった、<br>日々の小さな選択を自分の感覚だけで選ぶことから、<br>本音のリハビリを始めてみましょう。"
         },
         4: {
             title: "🌸 豊かさ拒否タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：豊かさ・受取）</span>",
-            desc: "お金や将来への不安が強かったり、人から何かしてもらったときに「申し訳ない」と罪悪感を持ってしまっていませんか？<br><br>あなたは責任感が強く、自立している素敵な方です。だからこそ、受け取ることへの心のブロックが働いているのかもしれません。あなたの本当の願いは『もっと安心して、愛や豊かさを受け取ること』です。<br><br>豊かさは、回ってくるものです。まずは誰かからの褒め言葉を、遠慮せずに「ありがとう」と笑顔で受け取ることから始めてみませんか？"
+            desc: "お金や将来への不安が強かったり、<br>人から何かしてもらったときに<br>「申し訳ない」と罪悪感を持ってしまっていませんか？<br><br>あなたは責任感が強く、自立している素敵な方です。<br>だからこそ、受け取ることへの心のブロックが<br>働いているのかもしれません。<br>あなたの本当の願いは<br>『もっと安心して、愛や豊かさを受け取ること』です。<br><br>豊かさは、回ってくるものです。<br>まずは誰かからの褒め言葉を、<br>遠慮せずに「ありがとう」と笑顔で<br>受け取ることから始めてみませんか？"
         }
     };
 
@@ -352,10 +367,15 @@
         }
 
         const result = resultsData[maxType];
+        
+        // innerHTML を使うことで、文章内の <br> タグを正しい改行としてレンダリングします
         document.getElementById('result-type').innerHTML = result.title;
         document.getElementById('result-desc').innerHTML = result.desc;
         
         changeScreen('screen-result');
+        
+        // 結果画面に切り替わった際、スクロール位置を一番上にリセットします
+        document.getElementById('result-desc').scrollTop = 0;
     }
 </script>
 
