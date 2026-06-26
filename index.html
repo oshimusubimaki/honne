@@ -21,7 +21,6 @@
             align-items: center;
             overflow-x: hidden;
             position: relative;
-            padding: 20px 0;
         }
 
         /* 背景の装飾（オーガニックで柔らかな水彩風グラデーション） */
@@ -49,7 +48,7 @@
             -webkit-backdrop-filter: blur(10px);
             border: 2px solid #ffffff;
             border-radius: 32px;
-            padding: 35px 25px;
+            padding: 40px 25px;
             margin: 20px;
             text-align: center;
             position: relative;
@@ -183,20 +182,6 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        /* 結果メッセージ表示用ボックス（スクロール対応） */
-        .result-box {
-            text-align: left;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            border: 1px solid #FFF0EC;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.01);
-            max-height: 280px; /* 長い文章でもはみ出さないように制限 */
-            overflow-y: auto;  /* 必要に応じてボックス内スクロールを許可 */
-            -webkit-overflow-scrolling: touch;
-        }
     </style>
 </head>
 <body>
@@ -244,13 +229,13 @@
         <p style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold;">本当の願いが見つかりました</p>
         <h2 id="result-type" style="font-size: 1.5rem; margin-top: 5px; margin-bottom: 15px;"></h2>
         
-        <!-- タイプ別個別メッセージエリア -->
-        <div id="result-desc" class="result-box"></div>
+        <!-- タイプ別個別メッセージ -->
+        <p id="result-desc" style="text-align: left; background: #ffffff; padding: 20px; border-radius: 20px; font-size: 0.95rem; border: 1px solid #FFF0EC; box-shadow: 0 4px 10px rgba(0,0,0,0.01);"></p>
         
         <!-- 共通の安心メッセージ -->
-        <div style="margin: 25px 0 15px 0; border-top: 1px dashed #F0E6DF; padding-top: 20px;">
-            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.05rem; margin-bottom: 8px;">あなたがダメなのではありません。</p>
-            <p style="font-size: 0.9rem; margin-bottom: 0; line-height: 1.6;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
+        <div style="margin: 30px 0 20px 0; border-top: 1px dashed #F0E6DF; padding-top: 25px;">
+            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.1rem; margin-bottom: 10px;">あなたがダメのではありません。</p>
+            <p style="font-size: 0.95rem; margin-bottom: 0;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
         </div>
 
         <!-- LINEで結果を報告するボタン -->
@@ -268,45 +253,45 @@
         { text: "人に頼まれると断りにくい", type: 1 },
         { text: "自分の気持ちより相手を優先することが多い", type: 1 },
         { text: "本音を話すのが苦手", type: 1 },
-        { text: "自分の「好き・嫌い」を\nはっきり言うのが怖い", type: 1 },
-        { text: "頑張っているのに\n報われないと感じることがある", type: 1 },
+        { text: "自分の「好き・嫌い」をはっきり言うのが怖い", type: 1 },
+        { text: "頑張っているのに報われないと感じることがある", type: 1 },
         
         { text: "やりたいと思っても動けないことがある", type: 2 },
-        { text: "失敗するくらいなら\n挑戦しない方がいいと思う", type: 2 },
-        { text: "周りの人がキラキラして見えて、\n焦りを感じる", type: 2 },
-        { text: "周りからは頑張っていると言われる\n（けど自分では認められない）", type: 2 },
-        { text: "もっと豊かになりたいと思う反面、\n自分には無理だと思う", type: 2 },
+        { text: "失敗するくらいなら挑戦しない方がいいと思う", type: 2 },
+        { text: "周りの人がキラキラして見えて、焦りを感じる", type: 2 },
+        { text: "周りからは頑張っていると言われる（けど自分では認められない）", type: 2 },
+        { text: "もっと豊かなりたいと思う反面、自分には無理だと思う", type: 2 },
         
         { text: "本当にやりたいことを聞かれると答えに迷う", type: 3 },
-        { text: "誰かに「本当はどうしたいの？」と\n聞かれると答えに詰まる", type: 3 },
+        { text: "誰かに「本当はどうしたいの？」と聞かれると答えに詰まる", type: 3 },
         { text: "人生このままでいいのかなと思うことがある", type: 3 },
-        { text: "行動するときに、自分の気持ちより\n「損得」や「正解」を考えてしまう", type: 3 },
+        { text: "行動するときに、自分の気持ちより「損得」や「正解」を考えてしまう", type: 3 },
         { text: "自分にはまだ何かできることがある気がする", type: 3 },
         
         { text: "自分のためにお金を使うと少し罪悪感がある", type: 4 },
         { text: "お金の不安が頭から離れない", type: 4 },
-        { text: "豊かになっている自分を想像すると\n違和感がある", type: 4 },
-        { text: "プレゼントや褒め言葉を\n素直に受け取るのが苦手（遠慮してしまう）", type: 4 }, // ←ココの文字化けをきれいに修正しました！
-        { text: "「休むこと」に罪悪感があり、\n常に何かしていないと落ち着かない", type: 4 }
+        { text: "豊かになっている自分を想像すると違和感がある", type: 4 },
+        { text: "プレゼントや褒め言葉を素直に受け取るのが苦手", type: 4 },
+        { text: "「休むこと」に罪悪感があり、常に何かしていないと落ち着かない", type: 4 }
     ];
 
     // --- 各タイプの診断結果テキスト ---
     const resultsData = {
         1: {
             title: "🌸 我慢しすぎタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自由）</span>",
-            desc: "あなたはこれまで、<br>周りの人の気持ちを最優先にして、<br>場の調和を保ってきたとても優しい方ですね。<br><br>でも、その優しさの裏で、<br>自分の「こうしたい」という声を<br>ずっと閉じ込めていませんでしたか？<br><br>あなたが本当に求めているのは<br>『もっと自由に、自分らしく生きること』です。<br><br>今日からは、<br>ほんの少しだけ自分を一番に<br>甘やかしてあげてください。<br>あなたが自由になることは、<br>誰も責めたりしませんよ。"
+            desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。でも、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。"
         },
         2: {
             title: "🌸 自己否定タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：挑戦）</span>",
-            desc: "「自分には無理かもしれない」<br>「失敗したらどうしよう」と、<br>一歩踏み出す前にブレーキをかけてしまうことが<br>多いかもしれませんね。<br><br>それは、<br>あなたが自分の人生をそれだけ真剣に考えている証拠。<br>決してあなたが弱いからではありません。<br>あなたが本当に求めているのは<br>『自分の可能性を信じて、新しく挑戦すること』です。<br><br>大きな一歩でなくて大丈夫。<br>あなたの心の中にある「やってみたい」という<br>小さな火を、大切に育てていきましょう。"
+            desc: "「自分には無理かもしれない」「失敗したらどうしよう」と、一歩踏み出す前にブレーキをかけてしまうことが多いかもしれませんね。それは、あなたが自分の人生をそれだけ真剣に考えている証拠。決してあなたが弱いからではありません。あなたが本当に求めているのは『自分の可能性を信じて、新しく挑戦すること』です。大きな一歩でなくて大丈夫。あなたの心の中にある「やってみたい」という小さな火を、大切に育てていきましょう。"
         },
         3: {
             title: "🌸 迷子タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自分の本音を知る）</span>",
-            desc: "周りの意見や「こうあるべき」という正論に<br>合わせているうちに、<br>自分が本当はどうしたいのか<br>分からなくなってしまっていませんか？<br><br>ナビが壊れたような不安を感じるかもしれませんが、<br>焦らなくて大丈夫です。<br>本当の願いが消えたわけではなく、<br>今は一時的に<br>『たくさんの情報に埋もれて見えなくなっているだけ』。<br><br>まずは「今日何を食べたいか」<br>「どっちの服を着たいか」といった、<br>日々の小さな選択を自分の感覚だけで選ぶことから、<br>本音のリハビリを始めてみましょう。"
+            desc: "周りの意見や「こうあるべき」という正論に合わせているうちに、自分が本当はどうしたいのか分からなくなってしまっていませんか？ナビが壊れたような不安を感じるかもしれませんが、焦らなくて大丈夫です。本当の願いが消えたわけではなく、今は一時的に『たくさんの情報に埋もれて見えなくなっているだけ』。まずは「今日何を食べたいか」「どっちの服を着たいか」といった、日々の小さな選択を自分の感覚だけで選ぶことから、本音のリハビリを始めてみましょう。"
         },
         4: {
             title: "🌸 豊かさ拒否タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：豊かさ・受取）</span>",
-            desc: "お金や将来への不安が強かったり、<br>人から何かしてもらったときに<br>「申し訳ない」と罪悪感を持ってしまっていませんか？<br><br>あなたは責任感が強く、自立している素敵な方です。<br>だからこそ、受け取ることへの心のブロックが<br>働いているのかもしれません。<br>あなたの本当の願いは<br>『もっと安心して、愛や豊かさを受け取ること』です。<br><br>豊かさは、回ってくるものです。<br>まずは誰かからの褒め言葉を、<br>遠慮せずに「ありがとう」と笑顔で<br>受け取ることから始めてみませんか？"
+            desc: "お金や将来への不安が強かったり、人から何かしてもらったときに「申し訳ない」と罪悪感を持ってしまっていませんか？あなたは責任感が強く、自立している素敵な方です。だからこそ、受け取ることへの心のブロックが働いているのかもしれません。あなたの本当の願いは『もっと安心して、愛や豊かさを受け取ること』です。豊かさは、回ってくるものです。まずは誰かからの褒め言葉を、遠慮せずに「ありがとう」と笑顔で受け取ることから始めてみませんか？"
         }
     };
 
@@ -328,9 +313,7 @@
     function showQuestion() {
         const q = questions[currentQuestionIndex];
         document.getElementById('question-number').innerText = `質問 ${currentQuestionIndex + 1} / 20`;
-        
-        // 改行コード（\n）をHTMLの改行（<br>）に変換して表示します
-        document.getElementById('question-text').innerHTML = q.text.replace(/\n/g, '<br>');
+        document.getElementById('question-text').innerText = q.text;
         
         const progress = ((currentQuestionIndex) / questions.length) * 100;
         document.getElementById('progress-bar').style.width = `${progress}%`;
@@ -367,13 +350,10 @@
         }
 
         const result = resultsData[maxType];
-        
         document.getElementById('result-type').innerHTML = result.title;
-        document.getElementById('result-desc').innerHTML = result.desc;
+        document.getElementById('result-desc').innerText = result.desc;
         
         changeScreen('screen-result');
-        
-        document.getElementById('result-desc').scrollTop = 0;
     }
 </script>
 
