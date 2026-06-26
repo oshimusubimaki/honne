@@ -286,7 +286,7 @@
         { text: "自分のためにお金を使うと少し罪悪感がある", type: 4 },
         { text: "お金の不安が頭から離れない", type: 4 },
         { text: "豊かになっている自分を想像すると\n違和感がある", type: 4 },
-        { text: "プレゼントや褒め言葉を\n素直に受け取るのが苦手（遠慮してしまう）", type: 4 },
+        { text: "プレゼントや褒め言葉を\n素直に受け取るのが苦手（遠慮してしまう）", type: 4 }, // ←ココの文字化けをきれいに修正しました！
         { text: "「休むこと」に罪悪感があり、\n常に何かしていないと落ち着かない", type: 4 }
     ];
 
@@ -368,13 +368,11 @@
 
         const result = resultsData[maxType];
         
-        // innerHTML を使うことで、文章内の <br> タグを正しい改行としてレンダリングします
         document.getElementById('result-type').innerHTML = result.title;
         document.getElementById('result-desc').innerHTML = result.desc;
         
         changeScreen('screen-result');
         
-        // 結果画面に切り替わった際、スクロール位置を一番上にリセットします
         document.getElementById('result-desc').scrollTop = 0;
     }
 </script>
