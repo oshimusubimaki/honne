@@ -188,7 +188,7 @@
 
 <div class="app-container">
 
-    <!-- ① トップ画面（ご指定のテキスト・改行位置に修正しました） -->
+    <!-- ① トップ画面 -->
     <div id="screen-top" class="screen active">
         <h1 style="font-size: 1.5rem; line-height: 1.6; margin-bottom: 25px;">
             <span style="font-size: 1.1rem; font-weight: normal; color: #FFB3A7; display: block; margin-bottom: 5px;">20の質問で分かる</span>
@@ -234,12 +234,12 @@
         
         <!-- 共通の安心メッセージ -->
         <div style="margin: 30px 0 20px 0; border-top: 1px dashed #F0E6DF; padding-top: 25px;">
-            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.1rem; margin-bottom: 10px;">あなたがダメのではありません。</p>
+            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.1rem; margin-bottom: 10px;">あなたがダメなのではありません。</p>
             <p style="font-size: 0.95rem; margin-bottom: 0;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
         </div>
 
-        <!-- LINEで結果を報告するボタン -->
-        <a href="https://ctplsb9d.autosns.app/addfriend/s/iCa1T40OVF/@qkm8011m" class="btn">LINEで結果を報告する</a>
+        <!-- LINEで結果を報告するボタン（URLを修正しました） -->
+        <a href="https://ctplsb9d.autosns.app/line" class="btn">LINEで結果を報告する</a>
 
         <!-- もう一度診断するボタン -->
         <button class="btn-sub" onclick="startQuiz()">もう一度診断する</button>
@@ -342,7 +342,7 @@
 
     function showResult() {
         let maxType = 1;
-        let maxScore = scores[1];MaxScore
+        let maxScore = scores[1];
         
         for (let i = 2; i <= 4; i++) {
             if (scores[i] > maxScore) {
