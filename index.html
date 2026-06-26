@@ -83,50 +83,6 @@
             margin-bottom: 20px;
         }
 
-        /* メインボタン（ソフトコーラルピンク） */
-        .btn {
-            display: inline-block;
-            width: 100%;
-            padding: 18px;
-            background-color: #FFB3A7; 
-            color: #ffffff;
-            border: none;
-            border-radius: 40px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 8px 20px rgba(255, 179, 167, 0.3);
-            text-decoration: none;
-            margin-top: 15px;
-        }
-        .btn:hover {
-            background-color: #ff9d90;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(255, 179, 167, 0.4);
-        }
-
-        /* サブボタン（「もう一度診断する」用：淡いベージュ系） */
-        .btn-sub {
-            display: inline-block;
-            width: 100%;
-            padding: 14px;
-            background-color: #F5EBE6;
-            color: #6D5D5D;
-            border: none;
-            border-radius: 40px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            margin-top: 25px;
-        }
-        .btn-sub:hover {
-            background-color: #EDE2DC;
-            color: #4A3E3E;
-        }
-
         /* 質問用YES/NOボタン（丸みを持たせたホワイト） */
         .btn-wrap {
             display: flex;
@@ -150,6 +106,29 @@
             background: #FFF5F3;
             border-color: #FFB3A7;
             transform: translateY(-1px);
+        }
+
+        /* 「もう一度診断する」・「スタート」用ボタン（ふんわりコーラルピンク） */
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 18px;
+            background-color: #FFB3A7; 
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(255, 179, 167, 0.3);
+            text-decoration: none;
+            margin-top: 25px;
+        }
+        .btn:hover {
+            background-color: #ff9d90;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(255, 179, 167, 0.4);
         }
 
         /* 進捗バー（パステルピンク） */
@@ -182,31 +161,6 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        /* 結果ページのオファーボックス（白背景＋パステルゴールド枠） */
-        .offer-box {
-            border: 2px dashed #F3E5AB;
-            padding: 25px 20px;
-            border-radius: 24px;
-            background: #ffffff;
-            margin-top: 35px;
-            box-shadow: 0 6px 15px rgba(243, 229, 171, 0.1);
-        }
-        .price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #FFB3A7;
-            margin: 15px 0;
-        }
-        .deadline {
-            color: #DE8F8F;
-            font-weight: bold;
-            font-size: 0.95rem;
-            background: #FFF0EC;
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
     </style>
 </head>
 <body>
@@ -217,7 +171,7 @@
         <p style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold; letter-spacing: 1.5px;">【これまでに 1,248 人が体験】</p>
         <h1 style="margin-top: 5px; font-size: 1.5rem;">あなたの心の奥にある<br>「本当の願い」発見テスト</h1>
         <p>日々の忙しさの中で、自分の本音を見失っていませんか？20の質問に直感で答えるだけで、あなたの心が本当に求めているメッセージを優しく解き明かします。</p>
-        <button class="btn" onclick="startQuiz()">テストをスタートする</button>
+        <button class="btn" style="margin-top:15px;" onclick="startQuiz()">テストをスタートする</button>
     </div>
 
     <div id="screen-quiz" class="screen">
@@ -249,24 +203,7 @@
             <p style="font-size: 0.95rem; margin-bottom: 0;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
         </div>
 
-        <div class="offer-box">
-            <p style="font-weight: bold; color: #4A3E3E; font-size: 1.05rem; letter-spacing: 1px;">＼ LINE登録者様限定特典 ／</p>
-            <p style="font-size: 0.9rem; margin-top: 10px; color: #6D5D5D;">アプリで分かった「あなたの本当の願い」をさらに深く具体的に開花させ、理想の未来へ進むための個別セッションをお届けします。</p>
-            <p style="margin-top: 15px; font-weight: bold;">通常 16,500円の<br><span style="color:#FFB3A7;">【 開運セッション 】</span></p>
-            
-            <div style="margin: 15px 0 10px 0;">
-                <span id="date-placeholder" class="deadline"></span>
-            </div>
-            
-            <div class="price">
-                <span style="font-size: 0.9rem; color: #b5a4a4; text-decoration: line-through; font-weight: normal; margin-right: 5px;">16,500円</span> ➔ 11,111円
-            </div>
-            <p style="font-size: 0.8rem; color: #8D7D7D; margin-bottom: 15px; line-height: 1.6;">※下のボタンからLINEに戻り、トークに<strong>「本音」</strong>と一言メッセージを送って枠を確保してくださいね。</p>
-            
-            <a href="https://ctplsb9d.autosns.app/addfriend/s/iCa1T40OVF/@qkm8011m" class="btn">LINEに戻って特別価格で申し込む</a>
-        </div>
-
-        <button class="btn-sub" onclick="startQuiz()">もう一度診断する</button>
+        <button class="btn" onclick="startQuiz()">もう一度診断する</button>
     </div>
 
 </div>
@@ -357,7 +294,6 @@
             showQuestion();
         } else {
             changeScreen('screen-loading');
-            calculateDeadline();
             
             setTimeout(() => {
                 showResult();
@@ -381,17 +317,6 @@
         document.getElementById('result-desc').innerHTML = result.desc;
         
         changeScreen('screen-result');
-    }
-
-    function calculateDeadline() {
-        const now = new Date();
-        now.setDate(now.getDate() + 5); 
-        const month = now.getMonth() + 1;
-        const date = now.getDate();
-        const weeks = ['日', '月', '火', '水', '木', '金', '土'];
-        const week = weeks[now.getDay()];
-        
-        document.getElementById('date-placeholder').innerText = `期間限定・${month}月${date}日（${week}）まで`;
     }
 </script>
 
