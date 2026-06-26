@@ -131,28 +131,6 @@
             box-shadow: 0 12px 25px rgba(255, 179, 167, 0.4);
         }
 
-        /* 結果をシェアするボタン（淡いパステルブルー・ミント調で差別化） */
-        .btn-share {
-            display: inline-block;
-            width: 100%;
-            padding: 16px;
-            background-color: #BCE2DE; 
-            color: #4A3E3E;
-            border: none;
-            border-radius: 40px;
-            font-size: 1.05rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 6px 15px rgba(188, 226, 222, 0.4);
-            text-decoration: none;
-            margin-top: 15px;
-        }
-        .btn-share:hover {
-            background-color: #a6dad5;
-            transform: translateY(-1px);
-        }
-
         /* サブボタン（「もう一度診断する」用：淡いベージュ系） */
         .btn-sub {
             display: inline-block;
@@ -232,7 +210,7 @@
             <div id="progress-bar" class="progress-bar"></div>
         </div>
         <p id="question-number" style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold; margin-bottom: 10px;"></p>
-        <h2 id="question-text" style="font-size: 1.2rem; min-height: 90px; display: flex; align-items: center; justify-content: center; font-weight: 500; padding: 0 10px;"></h2>
+        <h2 id="question-text" style="font-size: 1.2rem; min-height: 90px; display: flex; align-items: center; justify-content: center; font-weight: 500; padding: 0 10px; line-height: 1.6;"></h2>
         <div class="btn-wrap">
             <button class="btn-choice" onclick="answer(true)">YES</button>
             <button class="btn-choice" onclick="answer(false)">NO</button>
@@ -248,7 +226,7 @@
 
     <!-- ④ 結果画面 -->
     <div id="screen-result" class="screen">
-        <p style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold;">本当の願いが見つかりました</p>
+        <p style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold;">心の奥にある本音が見つかりました</p>
         <h2 id="result-type" style="font-size: 1.5rem; margin-top: 5px; margin-bottom: 15px;"></h2>
         
         <!-- タイプ別個別メッセージ -->
@@ -256,15 +234,12 @@
         
         <!-- 共通の安心メッセージ -->
         <div style="margin: 30px 0 20px 0; border-top: 1px dashed #F0E6DF; padding-top: 25px;">
-            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.1rem; margin-bottom: 10px;">あなたがダメのではありません。</p>
+            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.1rem; margin-bottom: 10px;">あなたがダメなのではありません。</p>
             <p style="font-size: 0.95rem; margin-bottom: 0;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
         </div>
 
         <!-- LINEで結果を報告するボタン -->
         <a href="https://ctplsb9d.autosns.app/line" class="btn">LINEで結果を報告する</a>
-
-        <!-- 結果をシェアするボタン -->
-        <button class="btn-share" onclick="shareResult()">結果をシェアする</button>
 
         <!-- もう一度診断するボタン -->
         <button class="btn-sub" onclick="startQuiz()">もう一度診断する</button>
@@ -273,60 +248,55 @@
 </div>
 
 <script>
-    // --- 20問の質問データとタイプ紐付け ---
+    // --- 20問の質問データ（見やすい位置に <br> を配置） ---
     const questions = [
-        { text: "人に頼まれると断りにくい", type: 1 },
-        { text: "自分の気持ちより相手を優先することが多い", type: 1 },
-        { text: "本音を話すのが苦手", type: 1 },
-        { text: "自分の「好き・嫌い」をはっきり言うのが怖い", type: 1 },
-        { text: "頑張っているのに報われないと感じることがある", type: 1 },
+        { text: "人に頼まれると<br>断りにくい", type: 1 },
+        { text: "自分の気持ちより<br>相手を優先することが多い", type: 1 },
+        { text: "本音を話すのが<br>苦手", type: 1 },
+        { text: "自分の「好き・嫌い」を<br>はっきり言うのが怖い", type: 1 },
+        { text: "頑張っているのに<br>報われないと感じることがある", type: 1 },
         
-        { text: "やりたいと思っても動けないことがある", type: 2 },
-        { text: "失敗するくらいなら挑戦しない方がいいと思う", type: 2 },
-        { text: "周りの人がキラキラして見えて、焦りを感じる", type: 2 },
-        { text: "周りからは頑張っていると言われる（けど自分では認められない）", type: 2 },
-        { text: "もっと豊かになりたいと思う反面、自分には無理だと思う", type: 2 },
+        { text: "やりたいと思っても<br>動けないことがある", type: 2 },
+        { text: "失敗するくらいなら<br>挑戦しない方がいいと思う", type: 2 },
+        { text: "周りの人がキラキラして見えて、<br>焦りを感じる", type: 2 },
+        { text: "周りからは頑張っていると言われる<br>（けど自分では認められない）", type: 2 },
+        { text: "もっと豊かになりたいと思う反面、<br>自分には無理だと思う", type: 2 },
         
-        { text: "本当にやりたいことを聞かれると答えに迷う", type: 3 },
-        { text: "誰かに「本当はどうしたいの？」と聞かれると答えに詰まる", type: 3 },
-        { text: "人生このままでいいのかなと思うことがある", type: 3 },
-        { text: "行動するときに、自分の気持ちより「損得」や「正解」を考えてしまう", type: 3 },
-        { text: "自分にはまだ何かできることがある気がする", type: 3 },
+        { text: "本当にやりたいことを聞かれると<br>答えに迷う", type: 3 },
+        { text: "誰かに「本当はどうしたいの？」と<br>聞かれると答えに詰まる", type: 3 },
+        { text: "人生このままでいいのかなと<br>思うことがある", type: 3 },
+        { text: "行動するときに、自分の気持ちより<br>「損得」や「正解」を考えてしまう", type: 3 },
+        { text: "自分にはまだ何か<br>できることがある気がする", type: 3 },
         
-        { text: "自分のためにお金を使うと少し罪悪感がある", type: 4 },
-        { text: "お金の不安が頭から離れない", type: 4 },
-        { text: "豊かになっている自分を想像すると違和感がある", type: 4 },
-        { text: "プレゼントや褒め言葉を素直に受け取るのが苦手", type: 4 },
-        { text: "「休むこと」に罪悪感があり、常に何かしていないと落ち着かない", type: 4 }
+        { text: "自分のためにお金を使うと<br>少し罪悪感がある", type: 4 },
+        { text: "お金の不安が<br>頭から離れない", type: 4 },
+        { text: "豊かになっている自分を想像すると<br>違和感がある", type: 4 },
+        { text: "プレゼントや褒め言葉を<br>素直に受け取るのが苦手", type: 4 },
+        { text: "「休むこと」に罪悪感があり、<br>常に何かしていないと落ち着かない", type: 4 }
     ];
 
     // --- 各タイプの診断結果テキスト ---
     const resultsData = {
         1: {
             title: "🌸 我慢しすぎタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自由）</span>",
-            desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。でも、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。",
-            shareName: "我慢しすぎタイプ（本当の願い：自由）"
+            desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。でも、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。"
         },
         2: {
             title: "🌸 自己否定タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：挑戦）</span>",
-            desc: "「自分には無理かもしれない」「失敗したらどうしよう」と、一歩踏み出す前にブレーキをかけてしまうことが多いかもしれませんね。それは、あなたが自分の人生をそれだけ真剣に考えている証拠。決してあなたが弱いからではありません。あなたが本当に求めているのは『自分の可能性を信じて、新しく挑戦すること』です。大きな一歩でなくて大丈夫。あなたの心の中にある「やってみたい」という小さな火を、大切に育てていきましょう。",
-            shareName: "自己否定タイプ（本当の願い：挑戦）"
+            desc: "「自分には無理かもしれない」「失敗したらどうしよう」と、一歩踏み出す前にブレーキをかけてしまうことが多いかもしれませんね。それは、あなたが自分の人生をそれだけ真剣に考えている証拠。決してあなたが弱いからではありません。あなたが本当に求めているのは『自分の可能性を信じて、新しく挑戦すること』です。大きな一歩でなくて大丈夫。あなたの心の中にある「やってみたい」という小さな火を、大切に育てていきましょう。"
         },
         3: {
             title: "🌸 迷子タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自分の本音を知る）</span>",
-            desc: "周りの意見や「こうあるべき」という正論に合わせているうちに、自分が本当はどうしたいのか分からなくなってしまっていませんか？ナビが壊れたような不安を感じるかもしれませんが、焦らなくて大丈夫です。本当の願いが消えたわけではなく、今は一時的に『たくさんの情報に埋もれて見えなくなっているだけ』。まずは「今日何を食べたいか」「どっちの服を着たいか」といった、日々の小さな選択を自分の感覚だけで選ぶことから、本音のリハビリを始めてみましょう。",
-            shareName: "迷子タイプ（本当の願い：自分の本音を知る）"
+            desc: "周りの意見や「こうあるべき」という正論に合わせているうちに、自分が本当はどうしたいのか分からなくなってしまっていませんか？ナビが壊れたような不安を感じるかもしれませんが、焦らなくて大丈夫です。本当の願いが消えたわけではなく、今は一時的に『たくさんの情報に埋もれて見えなくなっているだけ』。まずは「今日何を食べたいか」「どっちの服を着たいか」といった、日々の小さな選択を自分の感覚だけで選ぶことから、本音のリハビリを始めてみましょう。"
         },
         4: {
             title: "🌸 豊かさ拒否タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：豊かさ・受取）</span>",
-            desc: "お金や将来への不安が強かったり、人から何かしてもらったときに「申し訳ない」と罪悪感を持ってしまっていませんか？あなたは責任感が強く、自立している素敵な方です。だからこそ、受け取ることへの心のブロックが働いているのかもしれません。あなたの本当の願いは『もっと安心して、愛や豊かさを受け取ること』です。豊かさは、回ってくるものです。まずは誰かからの褒め言葉を、遠慮せずに「ありがとう」と笑顔で受け取ることから始めてみませんか？",
-            shareName: "豊かさ拒否タイプ（本当の願い：豊かさ・受取）"
+            desc: "お金や将来への不安が強かったり、人から何かしてもらったときに「申し訳ない」と罪悪感を持ってしまっていませんか？あなたは責任感が強く、自立している素敵な方です。だからこそ、受け取ることへの心のブロックが働いているのかもしれません。あなたの本当の願いは『もっと安心して、愛や豊かさを受け取ること』です。豊かさは、回ってくるものです。まずは誰かからの褒め言葉を、遠慮せずに「ありがとう」と笑顔で受け取ることから始めてみませんか？"
         }
     };
 
     let currentQuestionIndex = 0;
     let scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
-    let finalType = 1;
 
     function changeScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -343,7 +313,7 @@
     function showQuestion() {
         const q = questions[currentQuestionIndex];
         document.getElementById('question-number').innerText = `質問 ${currentQuestionIndex + 1} / 20`;
-        document.getElementById('question-text').innerText = q.text;
+        document.getElementById('question-text').innerHTML = q.text;
         
         const progress = ((currentQuestionIndex) / questions.length) * 100;
         document.getElementById('progress-bar').style.width = `${progress}%`;
@@ -379,20 +349,11 @@
             }
         }
 
-        finalType = maxType;
         const result = resultsData[maxType];
         document.getElementById('result-type').innerHTML = result.title;
         document.getElementById('result-desc').innerText = result.desc;
         
         changeScreen('screen-result');
-    }
-
-    function shareResult() {
-        const typeName = resultsData[finalType].shareName;
-        const text = encodeURIComponent(`「20の質問で分かる心の奥にある本音発見テスト」の診断結果は【 ${typeName} 】でした！\n#心の奥にある本音発見テスト \n`);
-        const url = encodeURIComponent(window.location.href);
-        
-        window.open(`https://twitter.com/share?text=${text}&url=${url}`, '_blank');
     }
 </script>
 
