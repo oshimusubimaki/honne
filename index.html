@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>20の質問で分かる心の奥にある本音発見テスト</title>
     <style>
         /* --- 基本デザイン（パステル・ウォームの世界観） --- */
@@ -10,6 +10,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
         body {
             background-color: #FFF9F1; /* 温かいクリーム色のベース */
@@ -21,6 +22,7 @@
             align-items: center;
             overflow-x: hidden;
             position: relative;
+            padding: 15px;
         }
 
         /* 背景の装飾（オーガニックで柔らかな水彩風グラデーション） */
@@ -42,24 +44,23 @@
         /* ふんわり浮き出るマシュマロコンテナ */
         .app-container {
             width: 100%;
-            max-width: 460px;
-            background: rgba(255, 255, 255, 0.75);
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 2px solid #ffffff;
-            border-radius: 32px;
-            padding: 40px 25px;
-            margin: 20px;
+            border-radius: 28px;
+            padding: 30px 20px;
             text-align: center;
             position: relative;
             z-index: 10;
-            box-shadow: 0 15px 35px rgba(212, 173, 165, 0.15);
+            box-shadow: 0 10px 30px rgba(212, 173, 165, 0.12);
         }
 
         /* 画面切り替えのフェードイン効果 */
         .screen {
             display: none;
-            animation: fadeIn 0.6s ease-out forwards;
+            animation: fadeIn 0.4s ease-out forwards;
         }
         .screen.active {
             display: block;
@@ -72,111 +73,106 @@
         /* タイトルと見出し */
         h1, h2 {
             color: #4A3E3E;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             line-height: 1.5;
             font-weight: 700;
         }
         p {
-            font-size: 1rem;
-            line-height: 1.8;
+            font-size: 0.95rem;
+            line-height: 1.7;
             color: #6D5D5D;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         /* 質問用YES/NOボタン（丸みを持たせたホワイト） */
         .btn-wrap {
             display: flex;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 12px;
+            margin-top: 25px;
         }
         .btn-choice {
             flex: 1;
-            padding: 18px;
+            padding: 16px;
             background: #ffffff;
             border: 2px solid #FFF0EC;
             color: #4A3E3E;
-            border-radius: 18px;
+            border-radius: 16px;
             font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
-        .btn-choice:hover {
+        .btn-choice:active {
             background: #FFF5F3;
             border-color: #FFB3A7;
-            transform: translateY(-1px);
+            transform: scale(0.97);
         }
 
         /* メインボタン（LINE報告・スタート用：ふんわりコーラルピンク） */
         .btn {
-            display: inline-block;
+            display: block;
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             background-color: #FFB3A7; 
             color: #ffffff;
             border: none;
             border-radius: 40px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 8px 20px rgba(255, 179, 167, 0.3);
+            transition: all 0.2s;
+            box-shadow: 0 6px 15px rgba(255, 179, 167, 0.3);
             text-decoration: none;
-            margin-top: 25px;
+            margin-top: 20px;
         }
-        .btn:hover {
+        .btn:active {
             background-color: #ff9d90;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(255, 179, 167, 0.4);
+            transform: scale(0.98);
         }
 
         /* サブボタン（「もう一度診断する」用：淡いベージュ系） */
         .btn-sub {
-            display: inline-block;
+            display: block;
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background-color: #F5EBE6;
             color: #6D5D5D;
             border: none;
             border-radius: 40px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
             text-decoration: none;
-            margin-top: 20px;
-        }
-        .btn-sub:hover {
-            background-color: #EDE2DC;
-            color: #4A3E3E;
+            margin-top: 15px;
         }
 
         /* 進捗バー（パステルピンク） */
         .progress-container {
             width: 100%;
             background: #F0E6DF;
-            height: 8px;
-            border-radius: 4px;
-            margin-bottom: 30px;
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 25px;
             overflow: hidden;
         }
         .progress-bar {
             width: 0%;
             height: 100%;
             background: #FFB3A7;
-            border-radius: 4px;
+            border-radius: 3px;
             transition: width 0.3s ease;
         }
 
         /* 診断中の優しく回るサークル */
         .loader {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border: 4px solid #F3E5AB; /* ソフトゴールド */
             border-top-color: #FFB3A7;
             border-radius: 50%;
-            margin: 30px auto;
+            margin: 25px auto;
             animation: spin 1s linear infinite;
         }
         @keyframes spin {
@@ -190,18 +186,18 @@
 
     <!-- ① トップ画面 -->
     <div id="screen-top" class="screen active">
-        <h1 style="font-size: 1.5rem; line-height: 1.6; margin-bottom: 25px;">
-            <span style="font-size: 1.1rem; font-weight: normal; color: #FFB3A7; display: block; margin-bottom: 5px;">20の質問で分かる</span>
+        <h1 style="font-size: 1.35rem; line-height: 1.5; margin-bottom: 20px;">
+            <span style="font-size: 1rem; font-weight: normal; color: #FFB3A7; display: block; margin-bottom: 5px;">20の質問で分かる</span>
             心の奥にある本音発見テスト
         </h1>
-        <p style="text-align: center; font-size: 0.95rem; line-height: 1.8; color: #6D5D5D;">
+        <p style="text-align: center; font-size: 0.9rem; line-height: 1.7; color: #6D5D5D;">
             日々の忙しさの中で、<br>
             自分の本音を見失っていませんか？<br>
             20の質問に直感で答えるだけで、<br>
             あなたの心が本当に求めているメッセージを<br>
             優しく解き明かします。
         </p>
-        <button class="btn" style="margin-top: 20px;" onclick="startQuiz()">テストをスタートする</button>
+        <button class="btn" style="margin-top: 15px;" onclick="startQuiz()">テストをスタートする</button>
     </div>
 
     <!-- ② 質問回答画面 -->
@@ -209,8 +205,8 @@
         <div class="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
-        <p id="question-number" style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold; margin-bottom: 10px;"></p>
-        <h2 id="question-text" style="font-size: 1.2rem; min-height: 90px; display: flex; align-items: center; justify-content: center; font-weight: 500; padding: 0 10px;"></h2>
+        <p id="question-number" style="color: #FFB3A7; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px;"></p>
+        <h2 id="question-text" style="font-size: 1.15rem; min-height: 80px; display: flex; align-items: center; justify-content: center; font-weight: 500; padding: 0 5px;"></h2>
         <div class="btn-wrap">
             <button class="btn-choice" onclick="answer(true)">YES</button>
             <button class="btn-choice" onclick="answer(false)">NO</button>
@@ -219,23 +215,23 @@
 
     <!-- ③ 診断中画面 -->
     <div id="screen-loading" class="screen">
-        <h2 style="font-size: 1.3rem; font-weight: 500;">あなたの心の本音を<br>そっと読み解いています...</h2>
+        <h2 style="font-size: 1.2rem; font-weight: 500;">あなたの心の本音を<br>そっと読み解いています...</h2>
         <div class="loader"></div>
-        <p style="font-size: 0.9rem;">深呼吸をして、すこしだけお待ちくださいね。</p>
+        <p style="font-size: 0.85rem;">深呼吸をして、すこしだけお待ちくださいね。</p>
     </div>
 
     <!-- ④ 結果画面 -->
     <div id="screen-result" class="screen">
-        <p style="color: #FFB3A7; font-size: 0.85rem; font-weight: bold;">心の奥にある本音が見つかりました</p>
-        <h2 id="result-type" style="font-size: 1.5rem; margin-top: 5px; margin-bottom: 15px;"></h2>
+        <p style="color: #FFB3A7; font-size: 0.8rem; font-weight: bold;">心の奥にある本音が見つかりました</p>
+        <h2 id="result-type" style="font-size: 1.35rem; margin-top: 5px; margin-bottom: 15px;"></h2>
         
         <!-- タイプ別個別メッセージ -->
-        <p id="result-desc" style="text-align: left; background: #ffffff; padding: 20px; border-radius: 20px; font-size: 0.95rem; border: 1px solid #FFF0EC; box-shadow: 0 4px 10px rgba(0,0,0,0.01);"></p>
+        <p id="result-desc" style="text-align: left; background: #ffffff; padding: 18px; border-radius: 18px; font-size: 0.88rem; border: 1px solid #FFF0EC; box-shadow: 0 4px 10px rgba(0,0,0,0.01);"></p>
         
         <!-- 共通の安心メッセージ -->
-        <div style="margin: 30px 0 20px 0; border-top: 1px dashed #F0E6DF; padding-top: 25px;">
-            <p style="font-weight: bold; color: #FFB3A7; font-size: 1.1rem; margin-bottom: 10px;">あなたがダメなのではありません。</p>
-            <p style="font-size: 0.95rem; margin-bottom: 0;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
+        <div style="margin: 20px 0 15px 0; border-top: 1px dashed #F0E6DF; padding-top: 20px;">
+            <p style="font-weight: bold; color: #FFB3A7; font-size: 1rem; margin-bottom: 8px;">あなたがダメなのではありません。</p>
+            <p style="font-size: 0.88rem; margin-bottom: 0;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
         </div>
 
         <!-- LINEで結果を報告するボタン -->
@@ -248,7 +244,7 @@
 </div>
 
 <script>
-    // --- 20問の質問データとタイプ紐付け（読みやすさを考慮した改行位置） ---
+    // --- 20問の質問データとタイプ紐付け（スマホ用に最適化したテキスト） ---
     const questions = [
         { text: "人に頼まれると\n断りにくい", type: 1 },
         { text: "自分の気持ちより\n相手を優先することが多い", type: 1 },
@@ -278,19 +274,19 @@
     // --- 各タイプの診断結果テキスト ---
     const resultsData = {
         1: {
-            title: "🌸 我慢しすぎタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（あなたの本音は『もっと自由でいたい』）</span>",
+            title: "🌸 我慢しすぎタイプ<br><span style='font-size:0.88rem; color:#FFB3A7; display:inline-block; margin-top:4px;'>（あなたの本音は『もっと自由でいたい』）</span>",
             desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。でも、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。"
         },
         2: {
-            title: "🌸 自信セーブタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（あなたの本音は『挑戦してみたい』）</span>",
+            title: "🌸 自信セーブタイプ<br><span style='font-size:0.88rem; color:#FFB3A7; display:inline-block; margin-top:4px;'>（あなたの本音は『挑戦してみたい』）</span>",
             desc: "「自分には無理かもしれない」「失敗したらどうしよう」と、一歩踏み出す前にブレーキをかけてしまうことが多いかもしれませんね。それは、あなたが自分の人生をそれだけ真剣に考えている証拠。決してあなたが弱いからではありません。あなたが本当に求めているのは『自分の可能性を信じて、新しく挑戦すること』です。大きな一歩でなくて大丈夫。あなたの心の中にある「やってみたい」という小さな火を、大切に育てていきましょう。"
         },
         3: {
-            title: "🌸 本音迷子タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（あなたの本音は『自分の気持ちを大切にしたい』）</span>",
+            title: "🌸 本音迷子タイプ<br><span style='font-size:0.88rem; color:#FFB3A7; display:inline-block; margin-top:4px;'>（あなたの本音は『自分の気持ちを大切にしたい』）</span>",
             desc: "周りの意見や「こうあるべき」という正論に合わせているうちに、自分が本当はどうしたいのか分からなくなってしまっていませんか？ナビが壊れたような不安を感じるかもしれませんが、焦らなくて大丈夫です。本当の願いが消えたわけではなく、今は一時的に『たくさんの情報に埋もれて見えなくなっているだけ』。まずは「今日何を食べたいか」「どっちの服を着たいか」といった、日々の小さな選択を自分の感覚だけで選ぶことから、本音のリハビリを始めてみましょう。"
         },
         4: {
-            title: "🌸 受け取り控えめタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（あなたの本音は『もっと安心して受け取りたい』）</span>",
+            title: "🌸 受け取り控えめタイプ<br><span style='font-size:0.88rem; color:#FFB3A7; display:inline-block; margin-top:4px;'>（あなたの本音は『もっと安心して受け取りたい』）</span>",
             desc: "お金や将来への不安が強かったり、人から何かしてもらったときに「申し訳ない」と罪悪感を持ってしまっていませんか？あなたは責任感が強く、自立している素敵な方です。だからこそ、受け取ることへの心のブロックが働いているのかもしれません。あなたの本当の願いは『もっと安心して、愛や豊かさを受け取ること』です。豊かさは、回ってくるものです。まずは誰かからの褒め言葉を、遠慮せずに「ありがとう」と笑顔で受け取ることから始めてみませんか？"
         }
     };
@@ -342,7 +338,8 @@
     }
 
     function showResult() {
-        let maxType = 1;maxScore = scores[1];
+        let maxType = 1;
+        let maxScore = scores[1];
         
         for (let i = 2; i <= 4; i++) {
             if (scores[i] > maxScore) {
