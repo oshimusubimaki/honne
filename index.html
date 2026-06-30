@@ -131,28 +131,6 @@
             box-shadow: 0 12px 25px rgba(255, 179, 167, 0.4);
         }
 
-        /* 結果をシェアするボタン（淡いパステルブルー・ミント調で差別化） */
-        .btn-share {
-            display: inline-block;
-            width: 100%;
-            padding: 16px;
-            background-color: #BCE2DE; 
-            color: #4A3E3E;
-            border: none;
-            border-radius: 40px;
-            font-size: 1.05rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 6px 15px rgba(188, 226, 222, 0.4);
-            text-decoration: none;
-            margin-top: 15px;
-        }
-        .btn-share:hover {
-            background-color: #a6dad5;
-            transform: translateY(-1px);
-        }
-
         /* サブボタン（「もう一度診断する」用：淡いベージュ系） */
         .btn-sub {
             display: inline-block;
@@ -261,10 +239,7 @@
         </div>
 
         <!-- LINEで結果を報告するボタン -->
-        <a href="https://ctplsb9d.autosns.app/line" class="btn">LINEで結果を報告する</a>
-
-        <!-- 結果をシェアするボタン -->
-        <button class="btn-share" onclick="shareResult()">結果をシェアする</button>
+        <a href="https://ctplsb9d.autosns.app/line" class="btn">診断結果をLINEで送る</a>
 
         <!-- もう一度診断するボタン -->
         <button class="btn-sub" onclick="startQuiz()">もう一度診断する</button>
@@ -303,24 +278,20 @@
     // --- 各タイプの診断結果テキスト ---
     const resultsData = {
         1: {
-            title: "🌸 我慢しすぎタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自由）</span>",
-            desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。でも、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。",
-            shareName: "我慢しすぎタイプ（本当の願い：自由）"
+            title: "🌸 我慢しすぎタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（あなたの本音は『もっと自由でいたい』）</span>",
+            desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。でも、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。"
         },
         2: {
-            title: "🌸 自己否定タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：挑戦）</span>",
-            desc: "「自分には無理かもしれない」「失敗したらどうしよう」と、一歩踏み出す前にブレーキをかけてしまうことが多いかもしれませんね。それは、あなたが自分の人生をそれだけ真剣に考えている証拠。決してあなたが弱いからではありません。あなたが本当に求めているのは『自分の可能性を信じて、新しく挑戦すること』です。大きな一歩でなくて大丈夫。あなたの心の中にある「やってみたい」という小さな火を、大切に育てていきましょう。",
-            shareName: "自己否定タイプ（本当の願い：挑戦）"
+            title: "🌸 自信セーブタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（あなたの本音は『挑戦してみたい』）</span>",
+            desc: "「自分には無理かもしれない」「失敗したらどうしよう」と、一歩踏み出す前にブレーキをかけてしまうことが多いかもしれませんね。それは、あなたが自分の人生をそれだけ真剣に考えている証拠。決してあなたが弱いからではありません。あなたが本当に求めているのは『自分の可能性を信じて、新しく挑戦すること』です。大きな一歩でなくて大丈夫。あなたの心の中にある「やってみたい」という小さな火を、大切に育てていきましょう。"
         },
         3: {
-            title: "🌸 迷子タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：自分の本音を知る）</span>",
-            desc: "周りの意見や「こうあるべき」という正論に合わせているうちに、自分が本当はどうしたいのか分からなくなってしまっていませんか？ナビが壊れたような不安を感じるかもしれませんが、焦らなくて大丈夫です。本当の願いが消えたわけではなく、今は一時的に『たくさんの情報に埋もれて見えなくなっているだけ』。まずは「今日何を食べたいか」「どっちの服を着たいか」といった、日々の小さな選択を自分の感覚だけで選ぶことから、本音のリハビリを始めてみましょう。",
-            shareName: "迷子タイプ（本当の願い：自分の本音を知る）"
+            title: "🌸 本音迷子タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（あなたの本音は『自分の気持ちを大切にしたい』）</span>",
+            desc: "周りの意見や「こうあるべき」という正論に合わせているうちに、自分が本当はどうしたいのか分からなくなってしまっていませんか？ナビが壊れたような不安を感じるかもしれませんが、焦らなくて大丈夫です。本当の願いが消えたわけではなく、今は一時的に『たくさんの情報に埋もれて見えなくなっているだけ』。まずは「今日何を食べたいか」「どっちの服を着たいか」といった、日々の小さな選択を自分の感覚だけで選ぶことから、本音のリハビリを始めてみましょう。"
         },
         4: {
-            title: "🌸 豊かさ拒否タイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（本当の願い：豊かさ・受取）</span>",
-            desc: "お金や将来への不安が強かったり、人から何かしてもらったときに「申し訳ない」と罪悪感を持ってしまっていませんか？あなたは責任感が強く、自立している素敵な方です。だからこそ、受け取ることへの心のブロックが働いているのかもしれません。あなたの本当の願いは『もっと安心して、愛や豊かさを受け取ること』です。豊かさは、回ってくるものです。まずは誰かからの褒め言葉を、遠慮せずに「ありがとう」と笑顔で受け取ることから始めてみませんか？",
-            shareName: "豊かさ拒否タイプ（本当の願い：豊かさ・受取）"
+            title: "🌸 受け取り控えめタイプ<br><span style='font-size:0.95rem; color:#FFB3A7;'>（あなたの本音は『もっと安心して受け取りたい』）</span>",
+            desc: "お金や将来への不安が強かったり、人から何かしてもらったときに「申し訳ない」と罪悪感を持ってしまっていませんか？あなたは責任感が強く、自立している素敵な方です。だからこそ、受け取ることへの心のブロックが働いているのかもしれません。あなたの本当の願いは『もっと安心して、愛や豊かさを受け取ること』です。豊かさは、回ってくるものです。まずは誰かからの褒め言葉を、遠慮せずに「ありがとう」と笑顔で受け取ることから始めてみませんか？"
         }
     };
 
@@ -344,7 +315,7 @@
         const q = questions[currentQuestionIndex];
         document.getElementById('question-number').innerText = `質問 ${currentQuestionIndex + 1} / 20`;
         
-        // 修正：innerTextからinnerHTMLに変更し、\nを<br>タグに置換して表示
+        // \nを<br>タグに置換して表示
         document.getElementById('question-text').innerHTML = q.text.replace(/\n/g, '<br>');
         
         const progress = ((currentQuestionIndex) / questions.length) * 100;
@@ -371,8 +342,7 @@
     }
 
     function showResult() {
-        let maxType = 1;
-        let maxScore = scores[1];
+        let maxType = 1;maxScore = scores[1];
         
         for (let i = 2; i <= 4; i++) {
             if (scores[i] > maxScore) {
@@ -387,14 +357,6 @@
         document.getElementById('result-desc').innerText = result.desc;
         
         changeScreen('screen-result');
-    }
-
-    function shareResult() {
-        const typeName = resultsData[finalType].shareName;
-        const text = encodeURIComponent(`「20の質問で分かる心の奥にある本音発見テスト」の診断結果は【 ${typeName} 】でした！\n#心の奥にある本音発見テスト \n`);
-        const url = encodeURIComponent(window.location.href);
-        
-        window.open(`https://twitter.com/share?text=${text}&url=${url}`, '_blank');
     }
 </script>
 
