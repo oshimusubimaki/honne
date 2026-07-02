@@ -3,359 +3,1621 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>20の質問で分かる心の奥にある本音発見テスト</title>
+    <title>AuraFlow - カラフルパステルAIジャーナル</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
-        /* --- 基本デザイン（パステル・ウォームの世界観） --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+        
         body {
-            background-color: #FFF9F1; /* 温かいクリーム色のベース */
-            color: #4A3E3E; /* 目に優しいソフトな焦げ茶色 */
-            font-family: "Helvetica Neue", "Segoe UI", "Hiragino Sans", "Meiryo", sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-            position: relative;
-            padding: 15px;
+            font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #fff0f5 0%, #f0f8ff 50%, #f5fffa 100%); /* サクラピンク・アリスブルー・ミントグリーンの3色グラデーション */
+            color: #334155; /* スモーキーチャコール */
+            -webkit-tap-highlight-color: transparent; /* モバイルのタップ青枠を消去 */
+        }
+        
+        /* ぷるんとした質感のシャーベットガラスパネル */
+        .glass-panel-blue {
+            background: rgba(240, 249, 255, 0.85); /* ベビーブルー */
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(186, 230, 253, 0.6);
+            box-shadow: 0 8px 30px -5px rgba(186, 230, 253, 0.3);
         }
 
-        /* 背景の装飾（オーガニックで柔らかな水彩風グラデーション） */
-        body::before {
-            content: "";
-            position: absolute;
-            top: -10%; left: -10%; width: 60%; height: 60%;
-            background: radial-gradient(circle, rgba(255, 179, 167, 0.25) 0%, transparent 70%);
-            z-index: 1;
-        }
-        body::after {
-            content: "";
-            position: absolute;
-            bottom: -10%; right: -10%; width: 70%; height: 70%;
-            background: radial-gradient(circle, rgba(243, 229, 171, 0.3) 0%, transparent 70%);
-            z-index: 1;
+        .glass-panel-yellow {
+            background: rgba(254, 252, 226, 0.85); /* シトロンイエロー */
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(254, 240, 138, 0.6);
+            box-shadow: 0 8px 30px -5px rgba(254, 240, 138, 0.3);
         }
 
-        /* ふんわり浮き出るマシュマロコンテナ */
-        .app-container {
-            width: 100%;
-            max-width: 420px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid #ffffff;
-            border-radius: 28px;
-            padding: 30px 20px;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            box-shadow: 0 10px 30px rgba(212, 173, 165, 0.12);
+        .glass-panel-purple {
+            background: rgba(250, 245, 255, 0.85); /* ラベンダーパープル */
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(233, 213, 255, 0.6);
+            box-shadow: 0 10px 30px -8px rgba(216, 180, 254, 0.35);
         }
 
-        /* 画面切り替えのフェードイン効果 */
-        .screen {
-            display: none;
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-        .screen.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
+        /* アニメーション関連 */
+        .animate-bounce-subtle {
+            animation: bounceSubtle 2s infinite ease-in-out;
         }
 
-        /* タイトルと見出し */
-        h1, h2 {
-            color: #4A3E3E;
-            margin-bottom: 15px;
-            line-height: 1.5;
-            font-weight: 700;
-        }
-        p {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: #6D5D5D;
-            margin-bottom: 15px;
+        @keyframes bounceSubtle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
         }
 
-        /* 質問用YES/NOボタン（丸みを持たせたホワイト） */
-        .btn-wrap {
-            display: flex;
-            gap: 12px;
-            margin-top: 25px;
-        }
-        .btn-choice {
-            flex: 1;
-            padding: 16px;
-            background: #ffffff;
-            border: 2px solid #FFF0EC;
-            color: #4A3E3E;
-            border-radius: 16px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-        }
-        .btn-choice:active {
-            background: #FFF5F3;
-            border-color: #FFB3A7;
-            transform: scale(0.97);
-        }
-
-        /* メインボタン（LINE報告・スタート用：ふんわりコーラルピンク） */
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background-color: #FFB3A7; 
-            color: #ffffff;
-            border: none;
-            border-radius: 40px;
-            font-size: 1.05rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 6px 15px rgba(255, 179, 167, 0.3);
-            text-decoration: none;
-            margin-top: 20px;
-        }
-        .btn:active {
-            background-color: #ff9d90;
-            transform: scale(0.98);
-        }
-
-        /* サブボタン（「もう一度診断する」用：淡いベージュ系） */
-        .btn-sub {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: #F5EBE6;
-            color: #6D5D5D;
-            border: none;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            margin-top: 15px;
-        }
-
-        /* 進捗バー（パステルピンク） */
-        .progress-container {
-            width: 100%;
-            background: #F0E6DF;
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 6px;
             height: 6px;
-            border-radius: 3px;
-            margin-bottom: 25px;
-            overflow: hidden;
         }
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: #FFB3A7;
-            border-radius: 3px;
-            transition: width 0.3s ease;
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(216, 180, 254, 0.5);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(192, 132, 252, 0.7);
         }
 
-        /* 診断中の優しく回るサークル */
-        .loader {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #F3E5AB; /* ソフトゴールド */
-            border-top-color: #FFB3A7;
-            border-radius: 50%;
-            margin: 25px auto;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        /* モバイル用の快適なフォーム要素調整 */
+        input, select, textarea {
+            font-size: 16px !important; /* iOSでズームインが自動発生するのを防止する設定 */
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen pb-12">
 
-<div class="app-container">
-
-    <!-- ① トップ画面 -->
-    <div id="screen-top" class="screen active">
-        <h1 style="font-size: 1.35rem; line-height: 1.5; margin-bottom: 20px;">
-            <span style="font-size: 1rem; font-weight: normal; color: #FFB3A7; display: block; margin-bottom: 5px;">20の質問で分かる</span>
-            心の奥にある本音発見テスト
-        </h1>
-        <p style="text-align: center; font-size: 0.9rem; line-height: 1.7; color: #6D5D5D;">
-            日々の忙しさの中で、<br>
-            自分の本音を見失っていませんか？<br>
-            20の質問に直感で答えるだけで、<br>
-            あなたの心が本当に求めているメッセージを<br>
-            優しく解き明かします。
-        </p>
-        <button class="btn" style="margin-top: 15px;" onclick="startQuiz()">テストをスタートする</button>
-    </div>
-
-    <!-- ② 質問回答画面 -->
-    <div id="screen-quiz" class="screen">
-        <div class="progress-container">
-            <div id="progress-bar" class="progress-bar"></div>
-        </div>
-        <p id="question-number" style="color: #FFB3A7; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px;"></p>
-        <h2 id="question-text" style="font-size: 1.15rem; min-height: 80px; display: flex; align-items: center; justify-content: center; font-weight: 500; padding: 0 5px;"></h2>
-        <div class="btn-wrap">
-            <button class="btn-choice" onclick="answer(true)">YES</button>
-            <button class="btn-choice" onclick="answer(false)">NO</button>
-        </div>
-    </div>
-
-    <!-- ③ 診断中画面 -->
-    <div id="screen-loading" class="screen">
-        <h2 style="font-size: 1.2rem; font-weight: 500;">あなたの心の本音を<br>そっと読み解いています...</h2>
-        <div class="loader"></div>
-        <p style="font-size: 0.85rem;">深呼吸をして、すこしだけお待ちくださいね。</p>
-    </div>
-
-    <!-- ④ 結果画面 -->
-    <div id="screen-result" class="screen">
-        <p style="color: #FFB3A7; font-size: 0.8rem; font-weight: bold;">心の奥にある本音が見つかりました</p>
-        <h2 id="result-type" style="font-size: 1.35rem; margin-top: 5px; margin-bottom: 15px;"></h2>
-        
-        <!-- タイプ別個別メッセージ -->
-        <p id="result-desc" style="text-align: left; background: #ffffff; padding: 18px; border-radius: 18px; font-size: 0.88rem; border: 1px solid #FFF0EC; box-shadow: 0 4px 10px rgba(0,0,0,0.01);"></p>
-        
-        <!-- 共通の安心メッセージ -->
-        <div style="margin: 20px 0 15px 0; border-top: 1px dashed #F0E6DF; padding-top: 20px;">
-            <p style="font-weight: bold; color: #FFB3A7; font-size: 1rem; margin-bottom: 8px;">あなたがダメなのではありません。</p>
-            <p style="font-size: 0.88rem; margin-bottom: 0;">今まで頑張ってきたからこそ、<br>本音が見えにくくなっているだけです。<br>あなたの中にはすでに願いの種がありますよ。</p>
-        </div>
-
-        <!-- LINEで結果を報告するボタン -->
-        <a href="https://ctplsb9d.autosns.app/line" class="btn">診断結果をLINEで送る</a>
-
-        <!-- もう一度診断するボタン -->
-        <button class="btn-sub" onclick="startQuiz()">もう一度診断する</button>
-    </div>
-
-</div>
-
-<script>
-    // --- 20問の質問データとタイプ紐付け（スマホ用に最適化したテキスト） ---
-    const questions = [
-        { text: "人に頼まれると\n断りにくい", type: 1 },
-        { text: "自分の気持ちより\n相手を優先することが多い", type: 1 },
-        { text: "本音を話すのが苦手", type: 1 },
-        { text: "自分の「好き・嫌い」を\nはっきり言うのが怖い", type: 1 },
-        { text: "頑張っているのに\n報われないと感じることがある", type: 1 },
-        
-        { text: "やりたいと思っても\n動けないことがある", type: 2 },
-        { text: "失敗するくらいなら\n挑戦しない方がいいと思う", type: 2 },
-        { text: "周りの人がキラキラして見えて、\n焦りを感じる", type: 2 },
-        { text: "周りからは頑張っていると言われる\n（けど自分では認められない）", type: 2 },
-        { text: "もっと豊かになりたいと思う反面、\n自分には無理だと思う", type: 2 },
-        
-        { text: "本当にやりたいことを聞かれると\n答えに迷う", type: 3 },
-        { text: "誰かに「本当はどうしたいの？」と\n聞かれると答えに詰まる", type: 3 },
-        { text: "人生このままでいいのかなと\n思うことがある", type: 3 },
-        { text: "行動するときに、自分の気持ちより\n「損得」や「正解」を考えてしまう", type: 3 },
-        { text: "自分にはまだ\n何かできることがある気がする", type: 3 },
-        
-        { text: "自分のためにお金を使うと\n少し罪悪感がある", type: 4 },
-        { text: "お金の不安が\n頭から離れない", type: 4 },
-        { text: "豊かになっている自分を想像すると\n違和感がある", type: 4 },
-        { text: "プレゼントや褒め言葉を\n素直に受け取るのが苦手", type: 4 },
-        { text: "「休むこと」に罪悪感があり、\n常に何かしていないと落ち着かない", type: 4 }
-    ];
-
-    // --- 各タイプの診断結果テキスト ---
-    const resultsData = {
-        1: {
-            title: "🌸 我慢しすぎタイプ<br><span style='font-size:0.88rem; color:#FFB3A7; display:inline-block; margin-top:4px;'>（あなたの本音は『もっと自由でいたい』）</span>",
-            desc: "あなたはこれまで、周りの人の気持ちを最優先にして、場の調和を保ってきたとても優しい方ですね。でも、その優しさの裏で、自分の「こうしたい」という声をずっと閉じ込めていませんでしたか？あなたが本当に求めているのは『もっと自由に、自分らしく生きること』です。今日からは、ほんの少しだけ自分を一番に甘やかしてあげてください。あなたが自由になることは、誰も責めたりしませんよ。"
-        },
-        2: {
-            title: "🌸 自信セーブタイプ<br><span style='font-size:0.88rem; color:#FFB3A7; display:inline-block; margin-top:4px;'>（あなたの本音は『挑戦してみたい』）</span>",
-            desc: "「自分には無理かもしれない」「失敗したらどうしよう」と、一歩踏み出す前にブレーキをかけてしまうことが多いかもしれませんね。それは、あなたが自分の人生をそれだけ真剣に考えている証拠。決してあなたが弱いからではありません。あなたが本当に求めているのは『自分の可能性を信じて、新しく挑戦すること』です。大きな一歩でなくて大丈夫。あなたの心の中にある「やってみたい」という小さな火を、大切に育てていきましょう。"
-        },
-        3: {
-            title: "🌸 本音迷子タイプ<br><span style='font-size:0.88rem; color:#FFB3A7; display:inline-block; margin-top:4px;'>（あなたの本音は『自分の気持ちを大切にしたい』）</span>",
-            desc: "周りの意見や「こうあるべき」という正論に合わせているうちに、自分が本当はどうしたいのか分からなくなってしまっていませんか？ナビが壊れたような不安を感じるかもしれませんが、焦らなくて大丈夫です。本当の願いが消えたわけではなく、今は一時的に『たくさんの情報に埋もれて見えなくなっているだけ』。まずは「今日何を食べたいか」「どっちの服を着たいか」といった、日々の小さな選択を自分の感覚だけで選ぶことから、本音のリハビリを始めてみましょう。"
-        },
-        4: {
-            title: "🌸 受け取り控えめタイプ<br><span style='font-size:0.88rem; color:#FFB3A7; display:inline-block; margin-top:4px;'>（あなたの本音は『もっと安心して受け取りたい』）</span>",
-            desc: "お金や将来への不安が強かったり、人から何かしてもらったときに「申し訳ない」と罪悪感を持ってしまっていませんか？あなたは責任感が強く、自立している素敵な方です。だからこそ、受け取ることへの心のブロックが働いているのかもしれません。あなたの本当の願いは『もっと安心して、愛や豊かさを受け取ること』です。豊かさは、回ってくるものです。まずは誰かからの褒め言葉を、遠慮せずに「ありがとう」と笑顔で受け取ることから始めてみませんか？"
-        }
-    };
-
-    let currentQuestionIndex = 0;
-    let scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
-    let finalType = 1;
-
-    function changeScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
-    }
-
-    function startQuiz() {
-        currentQuestionIndex = 0;
-        scores = { 1: 0, 2: 0, 3: 0, 4: 0 };
-        changeScreen('screen-quiz');
-        showQuestion();
-    }
-
-    function showQuestion() {
-        const q = questions[currentQuestionIndex];
-        document.getElementById('question-number').innerText = `質問 ${currentQuestionIndex + 1} / 20`;
-        
-        // \nを<br>タグに置換して表示
-        document.getElementById('question-text').innerHTML = q.text.replace(/\n/g, '<br>');
-        
-        const progress = ((currentQuestionIndex) / questions.length) * 100;
-        document.getElementById('progress-bar').style.width = `${progress}%`;
-    }
-
-    function answer(isYes) {
-        if (isYes) {
-            const type = questions[currentQuestionIndex].type;
-            scores[type]++;
-        }
-
-        currentQuestionIndex++;
-
-        if (currentQuestionIndex < questions.length) {
-            showQuestion();
-        } else {
-            changeScreen('screen-loading');
+    <!-- ナビゲーションバー -->
+    <nav class="bg-white/60 backdrop-blur-md sticky top-0 z-40 border-b border-pink-100/60 px-4 py-3 mb-6">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-300 via-purple-300 to-indigo-300 flex items-center justify-center shadow-md shadow-purple-200 flex-shrink-0">
+                    <i class="fa-solid fa-crown text-white text-lg animate-bounce-subtle"></i>
+                </div>
+                <div class="text-center md:text-left">
+                    <h1 class="text-lg font-black tracking-tight bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">AuraFlow</h1>
+                    <p class="text-[10px] text-purple-400 font-bold uppercase tracking-wider">Macaron & Candy Self-Care Log</p>
+                </div>
+            </div>
             
-            setTimeout(() => {
-                showResult();
-            }, 2500); 
-        }
-    }
+            <!-- スマホ用のフレックス調整付きヘッダー右側ボタン -->
+            <div class="flex flex-wrap items-center justify-center gap-2 text-sm w-full md:w-auto">
+                <div class="flex items-center gap-1 bg-amber-50 border border-amber-200/60 text-amber-600 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm">
+                    <i class="fa-solid fa-fire text-amber-500"></i>
+                    <span id="streak-count">0</span> 日連続
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    function showResult() {
-        let maxType = 1;
-        let maxScore = scores[1];
+    <main class="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        for (let i = 2; i <= 4; i++) {
-            if (scores[i] > maxScore) {
-                maxScore = scores[i];
-                maxType = i;
+        <!-- 左サイド：カレンダー ＆ これまでの軌跡 (4/12) -->
+        <div class="lg:col-span-4 space-y-6">
+            <!-- カレンダーコンポーネント (ベビーブルー) -->
+            <div class="glass-panel-blue rounded-3xl p-4 sm:p-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-bold text-sky-800 flex items-center gap-2 text-sm sm:text-base">
+                        <i class="fa-regular fa-calendar-star text-sky-500"></i>
+                        がんばりの足跡
+                    </h2>
+                    <!-- 月切り替えボタンつきヘッダー -->
+                    <div class="flex items-center gap-1 bg-white/80 rounded-xl shadow-sm border border-sky-100 px-1 py-0.5">
+                        <button onclick="prevMonth()" class="w-6 h-6 flex items-center justify-center text-sky-600 hover:bg-sky-50 rounded-lg transition-colors cursor-pointer" title="前月へ">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <div class="text-[11px] text-sky-700 font-bold px-1 select-none min-w-[70px] text-center" id="calendar-month-year">2026年 6月</div>
+                        <button onclick="nextMonth()" class="w-6 h-6 flex items-center justify-center text-sky-600 hover:bg-sky-50 rounded-lg transition-colors cursor-pointer" title="翌月へ">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- カレンダーグリッド -->
+                <div class="grid grid-cols-7 gap-1 text-center text-[10px] sm:text-[11px] text-sky-400 font-bold mb-2">
+                    <div class="text-rose-400">日</div><div>月</div><div>火</div><div>水</div><div>木</div><div>金</div><div class="text-sky-400">土</div>
+                </div>
+                <div class="grid grid-cols-7 gap-1.5" id="calendar-days">
+                    <!-- JSで動的にカレンダーの日付と「王冠」ステータスを生成 -->
+                </div>
+                
+                <div class="mt-4 pt-3.5 border-t border-sky-200/50 flex items-center justify-between text-[10px] sm:text-[11px] text-sky-600/80 font-bold">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-5 h-5 rounded-lg bg-gradient-to-tr from-amber-200 to-yellow-100 border border-amber-300 flex items-center justify-center text-[10px] shadow-sm">👑</span>
+                        <span>成果保存ずみ</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span>
+                        <span>選択中の日</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- クイック統計 (シトロンイエロー) -->
+            <div class="glass-panel-yellow rounded-3xl p-4 sm:p-5">
+                <h3 class="font-bold text-xs text-yellow-700 mb-3 flex items-center gap-1.5">
+                    <i class="fa-solid fa-chart-line text-yellow-500"></i>
+                    今月の成長サマリー
+                </h3>
+                <div class="grid grid-cols-2 gap-3 text-center mb-4">
+                    <div class="bg-white/80 border border-yellow-200/40 rounded-2xl p-3 shadow-sm">
+                        <div class="text-[10px] text-yellow-600 font-bold">獲得した王冠</div>
+                        <div class="text-lg sm:text-xl font-black text-amber-600 mt-1" id="stats-crowns">0 <span class="text-xs text-slate-400 font-medium">個</span></div>
+                    </div>
+                    <div class="bg-white/80 border border-yellow-200/40 rounded-2xl p-3 shadow-sm">
+                        <div class="text-[10px] text-yellow-600 font-bold">累計完了タスク</div>
+                        <div class="text-lg sm:text-xl font-black text-emerald-600 mt-1" id="stats-tasks">0 <span class="text-xs text-slate-400 font-medium">個</span></div>
+                    </div>
+                </div>
+
+                <!-- 🌟 容量管理とバックアップ機能 🌟 -->
+                <div class="bg-white/65 border border-yellow-200 rounded-2xl p-3.5 text-xs text-yellow-800 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold"><i class="fa-solid fa-floppy-disk mr-1 text-yellow-600"></i> ストレージ管理</span>
+                        <span id="storage-percent-badge" class="px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full font-black text-[10px]">使用量: 0%</span>
+                    </div>
+                    <p class="text-[10px] text-yellow-700 leading-relaxed">
+                        アドバイス文を自動で圧縮する最適化システムを導入しました。1年以上の古いログは容量節約のため自動トリミングされます。
+                    </p>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <button onclick="exportData()" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-900 border border-yellow-300 font-bold py-2 px-2.5 rounded-xl transition-all flex items-center justify-center gap-1 active:scale-95 text-[10px]">
+                            <i class="fa-solid fa-download"></i> 保存(エクスポート)
+                        </button>
+                        <button onclick="triggerImport()" class="bg-white hover:bg-yellow-50 text-yellow-900 border border-yellow-300 font-bold py-2 px-2.5 rounded-xl transition-all flex items-center justify-center gap-1 active:scale-95 text-[10px]">
+                            <i class="fa-solid fa-upload"></i> 復元(インポート)
+                        </button>
+                    </div>
+                    <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importData(event)">
+                </div>
+            </div>
+        </div>
+
+        <!-- 右メイン：本日のタスク ＆ ふりかえりワークスペース (8/12) -->
+        <div class="lg:col-span-8 space-y-6">
+
+            <!-- 過去アーカイブ表示エリア（過去の日を選択した時に自動で出現） -->
+            <div id="archive-view" class="hidden bg-gradient-to-tr from-[#fdf4ff] via-[#fae8ff] to-[#f5f3ff] border-2 border-purple-200 rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-8 -top-8 w-32 h-32 bg-purple-200/30 rounded-full blur-2xl"></div>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+                    <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-700 border border-purple-200 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                        👑 過去のアーカイブを呼び出し中
+                    </span>
+                    <button onclick="backToToday()" class="w-full sm:w-auto justify-center text-xs font-bold text-slate-500 hover:text-slate-800 bg-white border border-slate-200 hover:border-slate-300 px-3 py-2.5 sm:py-1.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+                        今日に戻る <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+                <h2 class="text-lg sm:text-xl font-bold text-slate-800 flex items-center gap-2 mb-2">
+                    <span id="archive-date-title" class="text-purple-600">2026年6月22日</span> のふりかえり
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <!-- 左カラム：タスクと日記 -->
+                    <div class="space-y-4">
+                        <div class="bg-white/80 rounded-2xl p-4 border border-purple-100 shadow-sm">
+                            <h4 class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2 flex items-center gap-1"><i class="fa-solid fa-check text-emerald-400"></i> やり遂げたこと</h4>
+                            <ul class="space-y-2 text-xs text-slate-600 font-medium" id="archive-tasks">
+                                <!-- タスクリスト -->
+                            </ul>
+                        </div>
+                        <div class="bg-white/80 rounded-2xl p-4 border border-purple-100 shadow-sm">
+                            <h4 class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2 flex items-center gap-1"><i class="fa-solid fa-book-open text-sky-400"></i> この日のひとこと・日記</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed italic whitespace-pre-wrap" id="archive-diary">
+                                「今日は少し疲れていたけれど、タスクを終わらせることができて良かった。」
+                            </p>
+                        </div>
+                    </div>
+                    <!-- 右カラム：AIコーチのフィードバック -->
+                    <div class="bg-purple-50/50 border border-purple-100 rounded-2xl p-4 flex flex-col justify-between shadow-sm min-h-[160px]">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-6 h-6 rounded-lg bg-purple-100 border border-purple-200 flex items-center justify-center text-[10px] text-purple-700 font-bold">AI</span>
+                                <span class="text-xs font-bold text-purple-600">AIコーチから贈られた称号</span>
+                            </div>
+                            <div class="text-xs sm:text-sm font-bold text-purple-800 bg-white/85 border border-purple-200/50 px-2.5 py-1.5 rounded-xl inline-block mb-3" id="archive-title-badge">🏆 【限界突破の開拓者】</div>
+                            <p class="text-xs text-slate-500 font-medium leading-relaxed whitespace-pre-wrap" id="archive-coach-feedback">
+                                あなたの素晴らしい集中力とコミットメントによって、タスクは見事に消化されました。この調子で一歩一歩進んでいきましょう！
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-purple-100/50 flex items-center justify-between text-[10px] text-slate-400 font-semibold">
+                            <span>気分の記録: <span id="archive-emoji" class="text-sm">😊</span></span>
+                            <span>保存日時: <span id="archive-saved-time">2026/06/23 21:00</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- メインワークエリア（今日の日付、または新規ふりかえり用） -->
+            <div id="today-workspace" class="space-y-6">
+                <!-- 日付ヘッダーと今日のモチベーション -->
+                <div class="glass-panel-purple rounded-3xl p-5 sm:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <div class="text-[10px] text-purple-400 font-bold uppercase tracking-widest mb-1">Current Workspace</div>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-800 flex items-center gap-2 flex-wrap" id="current-work-date">
+                            2026年 6月 23日 (火)
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-500 border border-purple-200 font-bold">今日</span>
+                        </h2>
+                    </div>
+                    <!-- 気分セレクト -->
+                    <div class="flex items-center gap-2 bg-white/60 p-1.5 rounded-2xl border border-purple-100 w-full md:w-auto justify-between md:justify-start">
+                        <span class="text-[10px] text-slate-500 px-2 font-bold">今日の気分:</span>
+                        <div class="flex gap-1.5" id="mood-selectors">
+                            <button onclick="setMood('😊')" class="mood-btn w-9 h-9 rounded-xl flex items-center justify-center hover:bg-purple-100 transition-all text-base border border-transparent" data-mood="😊" title="普通/良好">😊</button>
+                            <button onclick="setMood('🔥')" class="mood-btn w-9 h-9 rounded-xl flex items-center justify-center hover:bg-purple-100 transition-all text-base border border-transparent" data-mood="🔥" title="絶好調/情熱的">🔥</button>
+                            <button onclick="setMood('😴')" class="mood-btn w-9 h-9 rounded-xl flex items-center justify-center hover:bg-purple-100 transition-all text-base border border-transparent" data-mood="😴" title="お疲れ/眠い">😴</button>
+                            <button onclick="setMood('🌱')" class="mood-btn w-9 h-9 rounded-xl flex items-center justify-center hover:bg-purple-100 transition-all text-base border border-transparent" data-mood="🌱" title="穏やか/リセット">🌱</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 統合タスク管理セクション -->
+                <div class="glass-panel-purple rounded-3xl p-5 sm:p-6 space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-purple-100 pb-3 gap-2">
+                        <h3 class="font-bold text-purple-800 flex items-center gap-2 text-sm sm:text-base">
+                            <i class="fa-solid fa-list-check"></i>
+                            本日のTODO＆スケジュール
+                        </h3>
+                        <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
+                            <!-- Show timeline toggles -->
+                            <div class="flex items-center gap-1.5 bg-white/70 px-2.5 py-1.5 rounded-lg border border-purple-100 text-xs">
+                                <input type="checkbox" id="toggle-timeline-sync" class="w-4 h-4 rounded text-purple-500 focus:ring-purple-400 cursor-pointer" checked onchange="renderTodos()">
+                                <label for="toggle-timeline-sync" class="text-[10px] text-slate-500 font-bold cursor-pointer select-none">🕒 予定も表示</label>
+                            </div>
+                            <span class="text-[10px] sm:text-xs text-purple-600 font-bold bg-white px-2.5 py-1.5 rounded-lg border border-purple-100" id="todo-progress-text">完了 0 / 0</span>
+                        </div>
+                    </div>
+
+                    <!-- プログレスバー -->
+                    <div class="w-full bg-purple-100 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-gradient-to-r from-pink-300 via-purple-300 to-sky-300 h-full transition-all duration-500" id="todo-progress-bar" style="width: 0%"></div>
+                    </div>
+
+                    <!-- 新規タスク＆予定 統合追加フォーム -->
+                    <form onsubmit="addTask(event)" class="space-y-3 bg-white/60 p-3 sm:p-4 rounded-2xl border border-purple-100">
+                        <div class="flex flex-col gap-2">
+                            <input type="text" id="new-task-input" required placeholder="例: カフェで勉強する、12:00 ランチ..." class="w-full bg-white border border-purple-100 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-purple-300 transition-colors shadow-inner">
+                            
+                            <div class="grid grid-cols-2 gap-2">
+                                <select id="new-task-tag" class="w-full bg-white border border-purple-100 rounded-xl px-3 py-2.5 text-xs font-bold text-purple-700 focus:outline-none">
+                                    <option value="🌸重要">🌸 重要</option>
+                                    <option value="🍀習慣">🍀 習慣</option>
+                                    <option value="⭐快速">⭐ 快速</option>
+                                    <option value="🧸お気楽">🧸 お気楽</option>
+                                </select>
+                                <select id="new-task-repeat" class="w-full bg-white border border-purple-100 rounded-xl px-3 py-2.5 text-xs font-bold text-purple-700 focus:outline-none">
+                                    <option value="none">🔁 1回のみ</option>
+                                    <option value="daily">🔄 毎日習慣</option>
+                                    <option value="weekly">📅 毎週習慣</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 時間割設定の展開スイッチ -->
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 pt-1">
+                            <label class="flex items-center gap-2 cursor-pointer text-[11px] text-slate-500 font-bold select-none py-1">
+                                <input type="checkbox" id="time-toggle" onchange="toggleTimePanel()" class="w-4 h-4 rounded border-purple-200 text-purple-500 focus:ring-purple-400">
+                                <span>🕒 スケジュール時間(タイムライン)を設定する</span>
+                            </label>
+
+                            <button type="submit" class="w-full sm:w-auto bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300 hover:opacity-90 text-white font-extrabold text-xs px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-md shadow-purple-100 active:scale-95">
+                                <i class="fa-solid fa-plus"></i> 追加
+                            </button>
+                        </div>
+
+                        <!-- 時間設定エリア（トグル時のみ開く） -->
+                        <div id="time-select-panel" class="hidden grid grid-cols-2 gap-2 pt-2 border-t border-purple-100/50">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">開始時間</label>
+                                <input type="time" id="new-task-start" value="10:00" class="w-full bg-white border border-purple-100 rounded-lg p-2 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">終了時間</label>
+                                <input type="time" id="new-task-end" value="11:00" class="w-full bg-white border border-purple-100 rounded-lg p-2 text-xs">
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- タスクリストヘッダー＆一括消去ボタン -->
+                    <div class="flex justify-between items-center pt-2">
+                        <span class="text-xs text-slate-400 font-bold">タスク一覧</span>
+                        <button id="clear-completed-btn" onclick="clearCompletedTasks()" class="hidden text-[10px] font-bold bg-rose-50 text-rose-500 hover:bg-rose-100 border border-rose-200 px-3 py-2 rounded-xl transition-all active:scale-95">
+                            <i class="fa-solid fa-trash-can mr-1"></i>完了を一括消去
+                        </button>
+                    </div>
+
+                    <!-- タスクリスト -->
+                    <div class="space-y-2.5 mt-2" id="task-list">
+                        <!-- 動的にTODO項目を注入 -->
+                    </div>
+                </div>
+
+                <!-- インライン編集フォーム (必要な時だけポップアップ) -->
+                <div id="inline-editor" class="hidden glass-panel-purple rounded-3xl p-4 sm:p-5 border-2 border-pink-200 shadow-xl space-y-3">
+                    <div class="flex justify-between items-center border-b border-purple-100 pb-2">
+                        <h4 class="text-xs font-black text-purple-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-pen-to-square"></i> タスクの編集
+                        </h4>
+                        <button onclick="closeEditor()" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    
+                    <input type="hidden" id="edit-id">
+
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1">タスク名</label>
+                            <input type="text" id="edit-text" class="w-full bg-white border border-purple-100 rounded-xl p-3 text-xs sm:text-sm text-slate-700">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">バッジ</label>
+                                <select id="edit-tag" class="w-full bg-white border border-purple-100 rounded-xl p-2.5 text-xs font-bold text-purple-700">
+                                    <option value="🌸重要">🌸 重要</option>
+                                    <option value="🍀習慣">🍀 習慣</option>
+                                    <option value="⭐快速">⭐ 快速</option>
+                                    <option value="🧸お気楽">🧸 お気楽</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">繰り返し</label>
+                                <select id="edit-repeat" class="w-full bg-white border border-purple-100 rounded-xl p-2.5 text-xs font-bold text-purple-700">
+                                    <option value="none">🔁 1回のみ</option>
+                                    <option value="daily">🔄 毎日習慣</option>
+                                    <option value="weekly">📅 毎週習慣</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 時間設定 -->
+                        <div class="grid grid-cols-2 gap-2 border-t border-purple-100/50 pt-2">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">開始（空欄でタスク化）</label>
+                                <input type="time" id="edit-start" class="w-full bg-white border border-purple-100 rounded-lg p-2 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1">終了</label>
+                                <input type="time" id="edit-end" class="w-full bg-white border border-purple-100 rounded-lg p-2 text-xs">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button type="button" onclick="closeEditor()" class="bg-slate-100 hover:bg-slate-200 text-slate-500 font-bold text-xs px-4 py-2.5 rounded-xl transition-all">キャンセル</button>
+                            <button type="button" onclick="saveEditedTask()" class="bg-gradient-to-r from-pink-300 to-purple-300 text-white font-extrabold text-xs px-5 py-2.5 rounded-xl transition-all shadow">保存</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1日の終わりのふりかえり・締めくくり -->
+                <div id="journal-section" class="glass-panel-purple rounded-3xl p-5 sm:p-6 space-y-4 border border-pink-200">
+                    <h3 class="font-bold text-purple-800 flex items-center gap-2 text-sm sm:text-base">
+                        <i class="fa-solid fa-pen-fancy text-purple-500"></i>
+                        今日の締めくくり・ジャーナル
+                    </h3>
+                    <p class="text-xs text-slate-400 font-semibold leading-relaxed">
+                        今日1日の成果、学んだこと、または自分への労いの言葉を1行でも良いので書き残しましょう。
+                    </p>
+                    
+                    <textarea id="today-journal-input" rows="3" placeholder="ここに入力した日記やタスクの内容をもとに、AIコーチが今夜の「あなただけの称号」と「ふりかえりアドバイス」を自動生成します。" class="w-full bg-white/80 border border-purple-100 rounded-2xl p-3.5 text-xs sm:text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-purple-300 transition-colors resize-none shadow-inner leading-relaxed"></textarea>
+
+                    <div class="flex flex-col gap-3 pt-2">
+                        <div class="text-[11px] text-purple-600 font-semibold flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-info flex-shrink-0"></i>
+                            <span>保存すると、左側のカレンダーに王冠（👑）が残ります。</span>
+                        </div>
+                        <button onclick="triggerCeremony()" class="w-full bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300 hover:opacity-90 text-white font-extrabold text-xs sm:text-sm px-6 py-4 rounded-2xl transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 shadow-md shadow-purple-100">
+                            👑 今日の成果をカレンダーに保存する
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ローカルAI分析中ローダー -->
+                <div id="ai-loader" class="hidden glass-panel-purple rounded-3xl p-6 sm:p-8 text-center space-y-4 border border-pink-200">
+                    <div class="flex justify-center">
+                        <div class="relative w-16 h-16">
+                            <div class="absolute inset-0 rounded-full border-4 border-purple-100"></div>
+                            <div class="absolute inset-0 rounded-full border-4 border-t-purple-400 animate-spin"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm sm:text-base font-bold text-purple-700">AIコーチ、今日のあなたの努力を分析中... ✨</h4>
+                        <p class="text-[11px] text-slate-400 mt-1 font-medium leading-relaxed">タスクの達成状況とジャーナルを読み込んで、極上の称賛メッセージを綴っています。</p>
+                    </div>
+                </div>
+
+                <!-- AIコーチ本日の称賛フィードバック結果 -->
+                <div id="ai-feedback-result" class="hidden bg-gradient-to-tr from-pink-50 via-purple-50 to-sky-50 border border-purple-200 rounded-3xl p-5 sm:p-6 shadow-lg relative overflow-hidden">
+                    <div class="absolute right-0 bottom-0 opacity-10 pointer-events-none">
+                        <i class="fa-solid fa-trophy text-8xl text-purple-300"></i>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4 border-b border-purple-100/60 pb-3">
+                        <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-700 border border-purple-200/50 text-[10px] font-bold flex items-center gap-1.5 shadow-sm">
+                            ✨ 今日のAIコーチング完了！
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-bold bg-white/75 border border-slate-200/40 px-2.5 py-1 rounded-lg" id="feedback-saved-timestamp">保存時間: 22:30</span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="text-[10px] text-purple-500 font-bold uppercase tracking-wider">AIがあなたに授けた最高の称号</div>
+                        <div>
+                            <h3 class="text-sm sm:text-base font-extrabold text-purple-700 bg-white/90 border border-purple-200 px-3 py-2 rounded-xl inline-flex items-center gap-2 shadow-sm" id="feedback-title">
+                                🏆 【不屈のチャレンジャー】
+                            </h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed pt-2" id="feedback-body">
+                            素晴らしい一日でしたね！予定していたタスクをすべてやり遂げ、さらに日記で自分を見つめ直す姿勢はまさに一流です。この前進は決して無駄にはなりません。
+                        </p>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-purple-100/60 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div class="text-[10px] text-slate-400 font-semibold leading-relaxed">
+                            ※このふりかえりデータはカレンダーの該当日に保存されました。明日になってもカレンダーからいつでも確認できます。
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- カスタム通知トースト -->
+    <div id="toast" class="fixed bottom-6 left-4 right-4 sm:left-auto sm:right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-white border border-purple-200/80 text-slate-700 px-4 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 max-w-sm mx-auto sm:mx-0">
+        <span class="text-purple-500 text-base" id="toast-icon">✨</span>
+        <span class="text-xs sm:text-sm font-bold leading-normal" id="toast-message">メッセージです</span>
+    </div>
+
+    <script>
+        // --- Web Audio API Chime Synth for premium feedback ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const now = audioCtx.currentTime;
+                
+                if (type === 'add') {
+                    playTone(523.25, 0.1, now, 'sine', 0.08); // C5
+                    playTone(659.25, 0.15, now + 0.04, 'sine', 0.05); // E5
+                } else if (type === 'complete') {
+                    playTone(349.23, 0.4, now, 'sine', 0.04); // F4
+                    playTone(440.00, 0.4, now + 0.03, 'sine', 0.04); // A4
+                    playTone(523.25, 0.5, now + 0.06, 'sine', 0.04); // C5
+                    playTone(659.25, 0.6, now + 0.09, 'sine', 0.03); // E5
+                    playTone(783.99, 0.7, now + 0.12, 'sine', 0.02); // G5
+                } else if (type === 'delete') {
+                    playTone(392.00, 0.15, now, 'triangle', 0.08);
+                    playTone(261.63, 0.2, now + 0.05, 'triangle', 0.05);
+                } else if (type === 'crown') {
+                    const notes = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+                    notes.forEach((f, i) => {
+                        playTone(f, 0.8, now + (i * 0.06), 'sine', 0.03);
+                    });
+                }
+            } catch (err) {
+                console.log("Audio contexts not supported/allowed yet");
             }
         }
 
-        finalType = maxType;
-        const result = resultsData[maxType];
-        document.getElementById('result-type').innerHTML = result.title;
-        document.getElementById('result-desc').innerText = result.desc;
-        
-        changeScreen('screen-result');
-    }
-</script>
+        function playTone(freq, duration, startTime, wave = 'sine', vol = 0.05) {
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.type = wave;
+            osc.frequency.setValueAtTime(freq, startTime);
+            
+            gainNode.gain.setValueAtTime(0, startTime);
+            gainNode.gain.linearRampToValueAtTime(vol, startTime + 0.015);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+            
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+        }
 
+        // --- Application State & ローカルAI思考データベース ---
+        const TITLE_PREFIXES = [
+            "🏆 【爆速の", "👑 【絶対的な", "🌱 【マイペースな", "🚀 【次元を超える", "🛡️ 【鉄壁の", 
+            "💡 【未来を照らす", "🎯 【百発百中の", "🌟 【銀河系最強の", "🍵 【至高の", "🌸 【優美なる",
+            "🎨 【圧倒的クリエイティブな", "🦄 【超稀有な", "⚡ 【光速の", "🍬 【スイートな", "🔮 【神秘なる",
+            "🌈 【自由気ままな", "🐾 【お散歩気分の", "🧸 【癒やし度100%の", "💎 【輝きに満ちた", "🌊 【涼やかな"
+        ];
+
+        const TITLE_SUFFIXES = [
+            "タスクバスター】", "自己管理マスター】", "前進主義者】", "開拓者】", "ルーティン・ヒーロー】",
+            "エクスプローラー】", "スナイパー】", "自己成長の星】", "ライフハッカー】", "バランサー】",
+            "ドリーマー】", "チャレンジャー】", "ライフデザイナー】", "クリエイター】", "習慣の支配者】",
+            "努力の天才】", "セルフケア達人】", "マイウェイランナー】", "癒やしスト】", "冒険家】"
+        ];
+
+        const KEYWORD_TITLES = {
+            "勉強": "📚 【知の探求を極めし賢者】",
+            "学習": "📚 【知の探求を極めし賢者】",
+            "プログラミング": "💻 【デジタル世界の超魔術師】",
+            "コード": "💻 【デジタル世界の超魔術師】",
+            "開発": "💻 【デジタル世界の超魔術師】",
+            "実装": "💻 【デジタル世界の超魔術師】",
+            "設計": "⚙️ 【神がかった設計思想家】",
+            "ジム": "🏃 【限界を超えるフィジカルマスター】",
+            "筋トレ": "🏃 【限界を超えるフィジカルマスター】",
+            "運動": "🏃 【限界を超えるフィジカルマスター】",
+            "ランニング": "👟 【風を追い越す韋駄天ランナー】",
+            "ヨガ": "🧘 【宇宙の調和を知る瞑想家】",
+            "ストレッチ": "🧘 【心身をほぐし尽くす調律師】",
+            "寝る": "😴 【極上の睡眠を守りし安眠大臣】",
+            "眠い": "😴 【心地よい休息を欲するまどろみ王】",
+            "疲れた": "🧸 【自分を全力で甘やかすセルフ愛好家】",
+            "疲れ": "🧸 【自分を全力で甘やかすセルフ愛好家】",
+            "ゆっくり": "🍵 【おだやかな時間を愛するスローライファー】",
+            "休む": "🌱 【心と体を満たす癒やしのソムリエ】",
+            "温泉": "♨️ 【湯船の温もりに浸かる温泉賢者】",
+            "ゲーム": "🎮 【電脳世界の伝説的プレイヤー】",
+            "読書": "📖 【物語の海を泳ぐブックトラベラー】",
+            "本": "📖 【物語の海を泳ぐブックトラベラー】",
+            "料理": "🍳 【味覚をデザインする創造シェフ】",
+            "掃除": "🧹 【空間 of 乱れをリセットする清らかな風】",
+            "バイト": "🪙 【社会に貢献するピカピカの労働ヒーロー】",
+            "仕事": "💼 【抜群のプロ意識を持つ現場の司令塔】"
+        };
+
+        const ADVICE_OPENINGS = [
+            "今日というかけがえのない1日を、本当にお疲れ様でした。あなたの努力と心の記録をじっくりと読ませていただきましたよ。",
+            "夜の静けさの中で、今日1日のあなたのがんばりに心から拍手を送りたいと思います。素晴らしい歩みでしたね。",
+            "お疲れ様でした！今日も自分自身の目標としっかり向き合い、このふりかえりの場所に戻ってきたこと自体が素晴らしい快挙です。",
+            "1日をこうして温かい言葉とアクションで締めくくろうとするあなたの姿勢、本当に尊くて美しいと感じています。",
+            "今日という日を精一杯駆け抜けたあなたへ、AIコーチから心からのリスペクトとハグを贈ります。本当によくがんばりました。"
+        ];
+
+        const ADVICE_TASKS_MANY = [
+            "完了したタスクの数々を見てください。これほどのことを迷わず確実にやりきってしまう実行力は、周囲を引っ張るリーダーシップそのものです！",
+            "怒涛の勢いでタスクを消化していくその姿は、まさにタスクの支配者ですね。あなたが決めたことをやり抜く強さが、今日の成果にしっかりと現れています。",
+            "複数の目標を器用にクリアしていく集中力に圧倒されました。一歩一歩が大きな自信となって、これからのあなたの道を開いていきますよ。"
+        ];
+
+        const ADVICE_TASKS_FEW = [
+            "決して焦らず、自分の目の前にある本当に必要なステップを一つずつ大切に踏みしめている様子が伝わり、とても誇らしい気持ちになりました。",
+            "数は少なく見えても、今日やり終えたタスクはあなたにとって非常に意味のある貴重な一歩です。小さな積み重ねこそが、未来の驚くべき原動力になります。",
+            "無理をせず、自分の心身の状態に合わせてできることを調整したあなたはとても賢明です。これこそ、持続可能な最高のセルフケアです。"
+        ];
+
+        const ADVICE_MOOD = {
+            "😊": "今日のあなたの穏やかで良好な状態が、言葉の端々から温かく伝わってきます。この心地よい波を保って、明日もあなたらしく進んでくださいね。",
+            "🔥": "情熱の炎がメラメラと燃えているような絶好調さが眩しいです！このみなぎるパワーを次の挑戦の種として、今夜は心ゆくまで達成感を噛み締めてください！",
+            "😴": "少しお疲れの様子ですね。それだけ一生懸命に頭や体を使った証拠です。今夜はスマホを少し遠くに置いて、お気に入りの飲み物を楽しみながら早く布団に入りましょう。",
+            "🌱": "自分を見つめ直し、リセットをしようとするクリアな精神状態がとても素敵です。深呼吸をして、心の中に生まれた新しいゆとりを大切に抱きしめてください。"
+        };
+
+        const ADVICE_CLOSINGS = [
+            "それでは、今夜は美味しいお布団に包まれて、自分をたっぷりと労う極上の夜を過ごしてくださいね。良い夢を。",
+            "この王冠はあなたの確かな努力の証です。カレンダーに刻まれたこの輝きを胸に、どうぞ安らかな眠りについてくださいね。",
+            "あなたは毎日、確実に成長しています。明日もあなたの味方としてここにいます。心地よい音楽でも聴きながらリラックスしてくださいね。",
+            "今夜は温かいお風呂に入って、張り詰めた体をゆっくりとほぐしてあげましょう。明日も素晴らしい朝があなたを待っています。",
+            "これにて今夜のふりかえりセッションは終了です。心からリラックスして、深い安らぎの時間をお楽しみください。"
+        ];
+
+        let state = {
+            currentDate: new Date(), // Selected Calendar Date
+            todayDate: new Date(),   // System Today
+            selectedMood: '😊',
+            todos: [],               // [{ id, text, completed, tag, repeat, start, end, date }]
+            archive: {},             // { "YYYY-MM-DD": { mood, todos, journal, savedAt, a, b, c, d, tTitle } } // ※a,b,c,dはAI文のインデックス番号
+            streak: 0,
+            lastSavedDateStr: ""     // YYYY-MM-DD
+        };
+
+        const tagStyles = {
+            "🌸重要": "bg-rose-100 border-rose-200 text-rose-700",
+            "🍀習慣": "bg-emerald-100 border-emerald-200 text-emerald-700",
+            "⭐快速": "bg-sky-100 border-sky-200 text-sky-700",
+            "🧸お気楽": "bg-orange-100 border-orange-200 text-orange-700"
+        };
+
+        window.onload = function() {
+            loadFromLocalStorage();
+            checkAndResetForNewDay();
+            initializeTodayWorkspace();
+            renderCalendar();
+            renderStats();
+            setMood('😊');
+            updateStorageUsage(); // 使用率メーター更新
+            
+            if (state.todos.length === 0) {
+                const todayStr = formatDateKey(state.todayDate);
+                state.todos = [
+                    { id: 1, text: "スマホでお気に入りのタスクを登録してみる", completed: false, tag: "🌸重要", repeat: "none", date: todayStr },
+                    { id: 2, text: "ジャーナル（ひとこと日記）をスマホで書いてみる", completed: false, tag: "🍀習慣", repeat: "daily", date: todayStr },
+                    { id: 3, text: "カレンダーに本日の成果を「保存」して王冠を得る", completed: false, tag: "⭐快速", repeat: "none", date: todayStr }
+                ];
+                saveToLocalStorage();
+                renderTodos();
+            }
+
+            // モバイル下書き保存用リスナー
+            document.getElementById('today-journal-input').addEventListener('input', (e) => {
+                const selectedKey = formatDateKey(state.currentDate);
+                if (!state.archive[selectedKey]) {
+                    localStorage.setItem(`ai_macaron_draft_${selectedKey}`, e.target.value);
+                }
+            });
+        };
+
+        function loadFromLocalStorage() {
+            const savedArchive = localStorage.getItem('ai_macaron_archive');
+            if (savedArchive) {
+                state.archive = JSON.parse(savedArchive);
+                
+                // 💾 マイグレーション(古い重たいアーカイブがある場合はID軽量形式に自動圧縮)
+                let migrated = false;
+                for (const key in state.archive) {
+                    const entry = state.archive[key];
+                    if (entry.aiFeedback && !entry.hasOwnProperty('a')) {
+                        // 古い長文テキストのアドバイスを検出したため、最適な圧縮キー(a,b,c,d)に置換
+                        entry.a = Math.floor(Math.random() * ADVICE_OPENINGS.length);
+                        entry.b = Math.floor(Math.random() * (ADVICE_TASKS_MANY.length));
+                        entry.c = Math.floor(Math.random() * 3);
+                        entry.d = Math.floor(Math.random() * ADVICE_CLOSINGS.length);
+                        entry.tTitle = entry.aiTitle || "🏆 【素晴らしい努力家】";
+                        
+                        delete entry.aiFeedback; // 重たいテキスト本体を消去して劇的削減！
+                        delete entry.aiTitle;
+                        migrated = true;
+                    }
+                }
+                if (migrated) {
+                    localStorage.setItem('ai_macaron_archive', JSON.stringify(state.archive));
+                }
+            }
+            const savedTodos = localStorage.getItem('ai_macaron_todos');
+            if (savedTodos) {
+                state.todos = JSON.parse(savedTodos);
+            }
+            const streakVal = localStorage.getItem('ai_macaron_streak');
+            if (streakVal) {
+                state.streak = parseInt(streakVal, 10);
+            }
+            const lastSavedDate = localStorage.getItem('ai_macaron_last_saved_date');
+            if (lastSavedDate) {
+                state.lastSavedDateStr = lastSavedDate;
+            }
+            updateStreakDisplay();
+        }
+
+        function saveToLocalStorage() {
+            // 💾 ログ自動トリミング：365日(1年)より前の古い過去ログの詳細情報を最適化して容量爆発を防ぐ
+            const archiveKeys = Object.keys(state.archive).sort();
+            const maxDaysToKeepDetailed = 365;
+            
+            if (archiveKeys.length > maxDaysToKeepDetailed) {
+                const keysToPrune = archiveKeys.slice(0, archiveKeys.length - maxDaysToKeepDetailed);
+                keysToPrune.forEach(oldKey => {
+                    // 王冠（存在）と基本統計数値(moodのみ)は守り、タスク名配列やジャーナル長文をクリーンアップ
+                    if (state.archive[oldKey]) {
+                        state.archive[oldKey] = {
+                            mood: state.archive[oldKey].mood || '😊',
+                            todos: [], // タスク名を空にする
+                            journal: "（1年以上前の詳細データは最適化されました）",
+                            savedAt: state.archive[oldKey].savedAt,
+                            a: 0, b: 0, c: 0, d: 0,
+                            tTitle: "🏆 【歴史を築きし伝説の持ち主】"
+                        };
+                    }
+                });
+            }
+
+            localStorage.setItem('ai_macaron_archive', JSON.stringify(state.archive));
+            localStorage.setItem('ai_macaron_todos', JSON.stringify(state.todos));
+            localStorage.setItem('ai_macaron_streak', state.streak.toString());
+            localStorage.setItem('ai_macaron_last_saved_date', state.lastSavedDateStr);
+            updateStorageUsage();
+        }
+
+        // 💾 ローカルストレージの現在の容量使用率を計算して表示する
+        function updateStorageUsage() {
+            let totalBytes = 0;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+                totalBytes += (key.length + value.length) * 2; // 文字は通常2バイト
+            }
+            // 一般的なlocalStorageの上限である5MB (5,242,880 Bytes) を基準にする
+            const limit = 5242880;
+            const percent = Math.min(Math.round((totalBytes / limit) * 100), 100);
+            const badge = document.getElementById('storage-percent-badge');
+            if (badge) {
+                badge.textContent = `使用量: ${percent}%`;
+                if (percent > 85) {
+                    badge.className = "px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full font-black text-[10px]";
+                } else {
+                    badge.className = "px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full font-black text-[10px]";
+                }
+            }
+        }
+
+        // 💾 バックアップ機能 (JSONファイルでログを丸ごとエクスポート)
+        function exportData() {
+            const dataToBackup = {
+                archive: state.archive,
+                todos: state.todos,
+                streak: state.streak,
+                lastSavedDateStr: state.lastSavedDateStr,
+                backupVersion: "2.0",
+                backupDate: new Date().toISOString()
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataToBackup));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `auraflow_backup_${formatDateKey(new Date())}.json`);
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+            showToast("📥 バックアップファイルを保存しました", "crown");
+        }
+
+        // 💾 復元ファイル選択
+        function triggerImport() {
+            document.getElementById('import-file-input').click();
+        }
+
+        // 💾 バックアップファイルからログを丸ごと復元 (インポート)
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.archive && typeof imported.archive === 'object') {
+                        state.archive = imported.archive;
+                        state.todos = imported.todos || [];
+                        state.streak = imported.streak || 0;
+                        state.lastSavedDateStr = imported.lastSavedDateStr || "";
+                        
+                        saveToLocalStorage();
+                        renderCalendar();
+                        renderStats();
+                        selectDate(state.todayDate);
+                        
+                        showToast("📤 ログデータを正常に復元しました！", "check");
+                        triggerConfettiCelebrate();
+                    } else {
+                        throw new Error("Invalid backup file structure");
+                    }
+                } catch (err) {
+                    showToast("⚠️ ファイルが壊れているか、対応していない形式です", "exclamation-circle");
+                }
+            };
+            reader.readAsText(file);
+            // 同じファイルを再選択できるようにリセット
+            event.target.value = '';
+        }
+
+        function checkAndResetForNewDay() {
+            const lastActive = localStorage.getItem('ai_macaron_last_active_day');
+            const todayKey = formatDateKey(state.todayDate);
+
+            if (lastActive && lastActive !== todayKey) {
+                performNewDayReset();
+            }
+            localStorage.setItem('ai_macaron_last_active_day', todayKey);
+        }
+
+        function performNewDayReset() {
+            let remainingTodos = [];
+            let resetCount = 0;
+
+            state.todos.forEach(todo => {
+                if (todo.repeat === 'daily' || todo.repeat === 'weekly') {
+                    todo.completed = false; // 繰り返しは未完了に
+                    remainingTodos.push(todo);
+                    resetCount++;
+                } else if (!todo.completed) {
+                    remainingTodos.push(todo); // 未完了単発はそのまま持ち越し
+                }
+            });
+
+            state.todos = remainingTodos;
+            saveToLocalStorage();
+            return resetCount;
+        }
+
+        function prevMonth() {
+            updateCalendarMonth(-1);
+        }
+
+        function nextMonth() {
+            updateCalendarMonth(1);
+        }
+
+        function updateCalendarMonth(offset) {
+            const currentDay = state.currentDate.getDate();
+            const targetYear = state.currentDate.getFullYear();
+            const targetMonth = state.currentDate.getMonth() + offset;
+            
+            const maxDaysInTargetMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
+            const safeDay = Math.min(currentDay, maxDaysInTargetMonth);
+            
+            state.currentDate = new Date(targetYear, targetMonth, safeDay);
+            
+            renderCalendar();
+            selectDate(state.currentDate);
+            playSound('add');
+        }
+
+        function updateStreakDisplay() {
+            document.getElementById('streak-count').textContent = state.streak;
+        }
+
+        function toggleTimePanel() {
+            const isChecked = document.getElementById('time-toggle').checked;
+            const panel = document.getElementById('time-select-panel');
+            if (isChecked) {
+                panel.classList.remove('hidden');
+            } else {
+                panel.classList.add('hidden');
+            }
+        }
+
+        function renderCalendar() {
+            const calendarDays = document.getElementById('calendar-days');
+            const monthYearHeader = document.getElementById('calendar-month-year');
+            if (!calendarDays || !monthYearHeader) return;
+            
+            calendarDays.innerHTML = '';
+
+            const year = state.currentDate.getFullYear();
+            const month = state.currentDate.getMonth();
+
+            monthYearHeader.textContent = `${year}年 ${month + 1}月`;
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const lastDay = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'py-1 sm:py-2';
+                calendarDays.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= lastDay; day++) {
+                const dayDate = new Date(year, month, day);
+                const dateKey = formatDateKey(dayDate);
+                const hasArchive = !!state.archive[dateKey];
+                const isToday = formatDateKey(state.todayDate) === dateKey;
+                const isSelected = formatDateKey(state.currentDate) === dateKey;
+
+                const dayBtn = document.createElement('button');
+                dayBtn.type = 'button';
+                dayBtn.onclick = () => selectDate(dayDate);
+
+                dayBtn.className = 'py-1.5 sm:py-2 rounded-2xl flex flex-col items-center justify-between min-h-[46px] sm:min-h-[50px] transition-all relative border ';
+
+                if (hasArchive) {
+                    dayBtn.className += ' bg-gradient-to-tr from-[#fecdd3] to-[#fed7aa] border-[#fde047] text-[#854d0e] hover:brightness-105 shadow-sm ';
+                } else if (isToday) {
+                    dayBtn.className += ' bg-[#fff5f6] border-[#ffccd5] text-[#db2777] hover:bg-[#ffe4e6] ';
+                } else {
+                    dayBtn.className += ' bg-white border-sky-100 text-sky-800 hover:bg-sky-50 ';
+                }
+
+                if (isSelected) {
+                    dayBtn.className += ' ring-2 ring-purple-400 ring-offset-2 ring-offset-white ';
+                }
+
+                const dayNumSpan = document.createElement('span');
+                dayNumSpan.className = `text-xs font-bold ${isToday ? 'underline decoration-2' : ''}`;
+                dayNumSpan.textContent = day;
+                dayBtn.appendChild(dayNumSpan);
+
+                const indicatorSpan = document.createElement('span');
+                indicatorSpan.className = 'text-[10px] sm:text-[11px] leading-none mt-0.5';
+                if (hasArchive) {
+                    indicatorSpan.textContent = '👑';
+                } else {
+                    indicatorSpan.textContent = '·';
+                    indicatorSpan.className += ' text-transparent';
+                }
+                dayBtn.appendChild(indicatorSpan);
+
+                calendarDays.appendChild(dayBtn);
+            }
+        }
+
+        function renderStats() {
+            const keys = Object.keys(state.archive);
+            document.getElementById('stats-crowns').innerHTML = `${keys.length} <span class="text-xs text-slate-400">個</span>`;
+            
+            let totalTasks = 0;
+            keys.forEach(key => {
+                const dayData = state.archive[key];
+                if (dayData && dayData.todos) {
+                    totalTasks += dayData.todos.filter(t => t.completed).length;
+                }
+            });
+            document.getElementById('stats-tasks').innerHTML = `${totalTasks} <span class="text-xs text-slate-400 font-bold">個</span>`;
+        }
+
+        function selectDate(date) {
+            state.currentDate = date;
+            renderCalendar();
+
+            const dateKey = formatDateKey(date);
+            const todayKey = formatDateKey(state.todayDate);
+            const journalSection = document.getElementById('journal-section');
+
+            if (state.archive[dateKey] && dateKey !== todayKey) {
+                showArchiveView(dateKey);
+                if (journalSection) journalSection.classList.add('hidden');
+            } else {
+                hideArchiveView();
+                document.getElementById('today-workspace').classList.remove('hidden');
+
+                if (state.archive[dateKey] && dateKey === todayKey) {
+                    const savedData = state.archive[dateKey];
+                    
+                    document.getElementById('current-work-date').innerHTML = `
+                        ${formatDateString(date)}
+                        <span class="text-xs px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-500 border border-purple-200 font-bold">今日 (保存完了)</span>
+                    `;
+                    
+                    setMood(savedData.mood || '😊');
+                    document.getElementById('today-journal-input').value = savedData.journal || '';
+                    
+                    if (journalSection) {
+                        journalSection.classList.remove('hidden');
+                        const journalTitle = journalSection.querySelector('h3');
+                        if (journalTitle) {
+                            journalTitle.innerHTML = `<i class="fa-solid fa-pen-fancy text-purple-500"></i> 今日の締めくくり (保存済み)`;
+                        }
+                    }
+                    
+                    showSavedAiFeedback(savedData);
+                } else {
+                    document.getElementById('ai-feedback-result').classList.add('hidden');
+
+                    if (dateKey === todayKey) {
+                        document.getElementById('current-work-date').innerHTML = `
+                            ${formatDateString(date)}
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-500 border border-purple-200 font-bold">今日</span>
+                        `;
+                    } else if (dateKey < todayKey) {
+                        document.getElementById('current-work-date').innerHTML = `
+                            ${formatDateString(date)}
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-600 border border-amber-200 font-bold">未保存の過去日</span>
+                        `;
+                    } else {
+                        document.getElementById('current-work-date').innerHTML = `
+                            ${formatDateString(date)}
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-400 font-bold">未来の予定</span>
+                        `;
+                    }
+
+                    const savedDraft = localStorage.getItem(`ai_macaron_draft_${dateKey}`) || '';
+                    document.getElementById('today-journal-input').value = savedDraft;
+
+                    const savedMood = localStorage.getItem(`ai_macaron_mood_${dateKey}`) || '😊';
+                    setMood(savedMood);
+
+                    if (dateKey <= todayKey) {
+                        if (journalSection) {
+                            journalSection.classList.remove('hidden');
+                            const journalTitle = journalSection.querySelector('h3');
+                            if (journalTitle) {
+                                const formatted = formatDateString(date);
+                                journalTitle.innerHTML = `<i class="fa-solid fa-pen-fancy text-purple-500"></i> ${formatted} の締めくくり`;
+                            }
+                        }
+                    } else {
+                        if (journalSection) journalSection.classList.add('hidden');
+                    }
+                }
+
+                renderTodos();
+            }
+        }
+
+        // 過去アーカイブの展開表示 (保存時はID化されたAI文をその場で再構築する)
+        function showArchiveView(dateKey) {
+            const archiveData = state.archive[dateKey];
+            const archiveView = document.getElementById('archive-view');
+            const todayWorkspace = document.getElementById('today-workspace');
+
+            todayWorkspace.classList.add('hidden');
+            archiveView.classList.remove('hidden');
+
+            document.getElementById('archive-date-title').textContent = formatDateString(new Date(dateKey.replace(/-/g, '/')));
+            document.getElementById('archive-emoji').textContent = archiveData.mood || '😊';
+            document.getElementById('archive-saved-time').textContent = archiveData.savedAt || '不明';
+            
+            // 💾 超軽量化: ID(数字)から対応するアドバイス用固定文字列をその場でデコード構築して展開！
+            const decodedTitle = archiveData.tTitle || "🏆 【素晴らしき継続の王者】";
+            const partA = ADVICE_OPENINGS[archiveData.a || 0];
+            const partB = (archiveData.b !== undefined && archiveData.b < ADVICE_TASKS_MANY.length) 
+                ? ADVICE_TASKS_MANY[archiveData.b] 
+                : ADVICE_TASKS_FEW[archiveData.b || 0];
+            const partC = (archiveData.c !== undefined) 
+                ? (ADVICE_MOOD[archiveData.mood] || "今日も自分と向き合うその一歩が価値ある前進です。") 
+                : "";
+            const partD = ADVICE_CLOSINGS[archiveData.d || 0];
+
+            const decodedFeedback = `${partA}\n\n${partB}\n\n${partC}\n\n${partD}`;
+
+            document.getElementById('archive-title-badge').textContent = decodedTitle;
+            document.getElementById('archive-coach-feedback').textContent = decodedFeedback;
+            document.getElementById('archive-diary').textContent = archiveData.journal || '（日記の書き残しはありません）';
+
+            const archiveTasksContainer = document.getElementById('archive-tasks');
+            archiveTasksContainer.innerHTML = '';
+            if (archiveData.todos && archiveData.todos.length > 0) {
+                archiveData.todos.forEach(task => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center gap-2 text-xs py-1.5 border-b border-purple-50 last:border-0 text-slate-600 font-medium';
+                    li.innerHTML = task.completed 
+                        ? `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span class="line-through text-slate-400">${task.text}</span>`
+                        : `<i class="fa-regular fa-circle text-slate-300"></i> <span class="text-slate-500">${task.text}</span>`;
+                    archiveTasksContainer.appendChild(li);
+                });
+            } else {
+                archiveTasksContainer.innerHTML = `<li class="text-xs text-slate-400 italic">登録されたタスクはありませんでした</li>`;
+            }
+        }
+
+        function hideArchiveView() {
+            document.getElementById('archive-view').classList.add('hidden');
+        }
+
+        function backToToday() {
+            state.todayDate = new Date();
+            selectDate(state.todayDate);
+        }
+
+        function initializeTodayWorkspace() {
+            document.getElementById('current-work-date').innerHTML = `
+                ${formatDateString(state.todayDate)}
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-500 border border-purple-200 font-bold">今日</span>
+            `;
+            renderTodos();
+        }
+
+        function setMood(emoji) {
+            state.selectedMood = emoji;
+            const selectedKey = formatDateKey(state.currentDate);
+            if (!state.archive[selectedKey]) {
+                localStorage.setItem(`ai_macaron_mood_${selectedKey}`, emoji);
+            }
+            
+            document.querySelectorAll('.mood-btn').forEach(btn => {
+                if (btn.getAttribute('data-mood') === emoji) {
+                    btn.className = 'mood-btn w-9 h-9 rounded-xl flex items-center justify-center bg-purple-100 text-purple-600 text-base border border-purple-200/60 shadow-sm font-bold scale-110 transition-all';
+                } else {
+                    btn.className = 'mood-btn w-9 h-9 rounded-xl flex items-center justify-center hover:bg-slate-100 transition-all text-base border border-transparent text-slate-400';
+                }
+            });
+        }
+
+        function addTask(event) {
+            event.preventDefault();
+            const input = document.getElementById('new-task-input');
+            const tagSelect = document.getElementById('new-task-tag');
+            const repeatSelect = document.getElementById('new-task-repeat');
+            const timeToggle = document.getElementById('time-toggle');
+
+            const text = input.value.trim();
+            if (!text) return;
+
+            let start = null;
+            let end = null;
+
+            if (timeToggle.checked) {
+                start = document.getElementById('new-task-start').value;
+                end = document.getElementById('new-task-end').value;
+            } else {
+                const timeRegex = /(\d{1,2}):(\d{2})(?:\s*-\s*(\d{1,2}):(\d{2}))?/;
+                const match = text.match(timeRegex);
+                if (match) {
+                    const startHour = match[1].padStart(2, '0');
+                    const startMin = match[2];
+                    start = `${startHour}:${startMin}`;
+                    
+                    if (match[3] && match[4]) {
+                        const endHour = match[3].padStart(2, '0');
+                        const endMin = match[4];
+                        end = `${endHour}:${endMin}`;
+                    } else {
+                        const nextHour = (parseInt(startHour, 10) + 1).toString().padStart(2, '0');
+                        end = `${nextHour}:${startMin}`;
+                    }
+                }
+            }
+
+            const newTask = {
+                id: Date.now(),
+                text: text,
+                completed: false,
+                tag: tagSelect.value,
+                repeat: repeatSelect.value,
+                start: start,
+                end: end,
+                date: formatDateKey(state.currentDate)
+            };
+
+            state.todos.push(newTask);
+            
+            input.value = '';
+            timeToggle.checked = false;
+            document.getElementById('time-select-panel').classList.add('hidden');
+            
+            saveToLocalStorage();
+            renderTodos();
+            playSound('add');
+            showToast("📝 タスクを追加しました", "plus");
+        }
+
+        function renderTodos() {
+            const taskList = document.getElementById('task-list');
+            const clearBtn = document.getElementById('clear-completed-btn');
+            const syncChecked = document.getElementById('toggle-timeline-sync').checked;
+            
+            if (!taskList) return;
+            taskList.innerHTML = '';
+
+            const selectedDateStr = formatDateKey(state.currentDate);
+            const selectedDayOfWeek = state.currentDate.getDay();
+
+            let displayList = state.todos.filter(todo => {
+                const taskDateStr = todo.date || formatDateKey(state.todayDate);
+
+                if (todo.repeat === 'none') {
+                    return taskDateStr === selectedDateStr;
+                }
+                if (todo.repeat === 'daily') {
+                    return selectedDateStr >= taskDateStr;
+                }
+                if (todo.repeat === 'weekly') {
+                    if (selectedDateStr < taskDateStr) return false;
+                    const createdDate = new Date(taskDateStr.replace(/-/g, '/'));
+                    return createdDate.getDay() === selectedDayOfWeek;
+                }
+                return false;
+            });
+
+            if (!syncChecked) {
+                displayList = displayList.filter(todo => !todo.start);
+            }
+
+            if (displayList.length === 0) {
+                taskList.innerHTML = `
+                    <div class="text-center py-8 text-xs text-slate-400 italic font-semibold">
+                        登録されたTODOや予定はまだありません。
+                    </div>
+                `;
+                updateProgress(0, 0);
+                clearBtn.classList.add('hidden');
+                return;
+            }
+
+            const anyCompletedOneTime = displayList.some(t => t.completed && t.repeat === 'none');
+            if (anyCompletedOneTime) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            const schedules = displayList.filter(t => t.start).sort((a, b) => a.start.localeCompare(b.start));
+            const normalTasks = displayList.filter(t => !t.start);
+            const sortedItems = [...schedules, ...normalTasks];
+
+            sortedItems.forEach(task => {
+                const item = document.createElement('div');
+                const badgeColorClass = tagStyles[task.tag] || "bg-purple-100 text-purple-700";
+                
+                let panelStyle = "bg-white border-purple-100 hover:border-purple-200";
+                if (task.completed) {
+                    panelStyle = "bg-emerald-50/40 border-emerald-200/50 text-slate-400";
+                } else if (task.start) {
+                    panelStyle = "bg-gradient-to-r from-sky-50 to-white border-sky-100 hover:border-sky-200";
+                }
+
+                item.className = `flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl border transition-all shadow-sm ${panelStyle} gap-3`;
+
+                const timeLabel = task.start 
+                    ? `<span class="px-2 py-0.5 bg-sky-100 text-sky-700 text-[9px] font-black rounded-lg mr-1"><i class="fa-regular fa-clock"></i> ${task.start}${task.end ? ' - ' + task.end : ''}</span>`
+                    : '';
+
+                const repeatLabel = task.repeat !== 'none'
+                    ? `<span class="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-[9px] font-black rounded-lg mr-1"><i class="fa-solid fa-repeat"></i> ${task.repeat === 'daily' ? '毎日' : '毎週'}</span>`
+                    : '';
+
+                item.innerHTML = `
+                    <div class="flex items-start gap-3 flex-1 cursor-pointer" onclick="toggleTask(${task.id})">
+                        <button type="button" class="w-6 h-6 rounded-lg flex items-center justify-center transition-all flex-shrink-0 mt-0.5 ${
+                            task.completed 
+                                ? 'bg-emerald-400 text-white shadow-sm' 
+                                : 'border-2 border-purple-200 hover:border-purple-300 bg-white'
+                        }">
+                            ${task.completed ? '<i class="fa-solid fa-check text-xs font-bold"></i>' : ''}
+                        </button>
+                        <div class="flex flex-col">
+                            <span class="text-xs sm:text-sm font-semibold leading-normal ${task.completed ? 'line-through text-slate-400' : 'text-slate-700'}">
+                                ${escapeHtml(task.text)}
+                            </span>
+                            <div class="flex flex-wrap gap-1 mt-1.5">
+                                ${timeLabel}
+                                ${repeatLabel}
+                                <span class="px-2 py-0.5 rounded-lg border text-[9px] font-black ${badgeColorClass}">${task.tag}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-end gap-2 border-t border-dashed border-purple-100/50 sm:border-none pt-2 sm:pt-0">
+                        <button onclick="event.stopPropagation(); openEditor(${task.id})" class="text-slate-400 hover:text-purple-500 p-2 hover:bg-purple-100/50 rounded-xl transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center" title="詳細編集">
+                            <i class="fa-solid fa-pen text-xs"></i>
+                        </button>
+                        <button onclick="event.stopPropagation(); deleteTask(${task.id})" class="text-slate-400 hover:text-rose-400 p-2 hover:bg-rose-50 rounded-xl transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center" title="削除">
+                            <i class="fa-regular fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                `;
+                taskList.appendChild(item);
+            });
+
+            const completedCount = displayList.filter(t => t.completed).length;
+            updateProgress(completedCount, displayList.length);
+        }
+
+        function toggleTask(id) {
+            state.todos = state.todos.map(task => {
+                if (task.id === id) {
+                    const nextState = !task.completed;
+                    if (nextState) {
+                        playSound('complete');
+                        showToast("🎉 ナイス！タスク完了", "check");
+                        triggerConfettiParticle();
+                    } else {
+                        playSound('delete');
+                    }
+                    return { ...task, completed: nextState };
+                }
+                return task;
+            });
+            saveToLocalStorage();
+            renderTodos();
+        }
+
+        function deleteTask(id) {
+            state.todos = state.todos.filter(task => task.id !== id);
+            saveToLocalStorage();
+            renderTodos();
+            playSound('delete');
+            showToast("🗑️ タスクを削除しました", "trash");
+        }
+
+        function clearCompletedTasks() {
+            state.todos = state.todos.filter(t => !(t.completed && t.repeat === 'none'));
+            saveToLocalStorage();
+            renderTodos();
+            playSound('delete');
+            showToast("🧹 完了したタスクを一括消去しました", "trash");
+        }
+
+        function updateProgress(completed, total) {
+            const progressPercent = total === 0 ? 0 : Math.round((completed / total) * 100);
+            const bar = document.getElementById('todo-progress-bar');
+            if (bar) bar.style.width = `${progressPercent}%`;
+            document.getElementById('todo-progress-text').textContent = `完了 ${completed} / ${total}`;
+        }
+
+        function openEditor(id) {
+            const task = state.todos.find(t => t.id === id);
+            if (!task) return;
+
+            document.getElementById('edit-id').value = task.id;
+            document.getElementById('edit-text').value = task.text;
+            document.getElementById('edit-tag').value = task.tag;
+            document.getElementById('edit-repeat').value = task.repeat;
+            document.getElementById('edit-start').value = task.start || '';
+            document.getElementById('edit-end').value = task.end || '';
+
+            const editor = document.getElementById('inline-editor');
+            editor.classList.remove('hidden');
+            editor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function closeEditor() {
+            document.getElementById('inline-editor').classList.add('hidden');
+        }
+
+        function saveEditedTask() {
+            const id = parseInt(document.getElementById('edit-id').value, 10);
+            const text = document.getElementById('edit-text').value.trim();
+            const tag = document.getElementById('edit-tag').value;
+            const repeat = document.getElementById('edit-repeat').value;
+            const startVal = document.getElementById('edit-start').value;
+            const endVal = document.getElementById('edit-end').value;
+
+            if (!text) return;
+
+            state.todos = state.todos.map(task => {
+                if (task.id === id) {
+                    return {
+                        ...task,
+                        text: text,
+                        tag: tag,
+                        repeat: repeat,
+                        start: startVal ? startVal : null,
+                        end: endVal ? endVal : null
+                    };
+                }
+                return task;
+            });
+
+            saveToLocalStorage();
+            renderTodos();
+            closeEditor();
+            playSound('add');
+            showToast("📝 タスクを更新しました", "plus");
+        }
+
+        // --- 振り返り完了＆成果の保存 ---
+        function triggerCeremony() {
+            const journalText = document.getElementById('today-journal-input').value.trim();
+            const selectedDateStr = formatDateKey(state.currentDate);
+            const selectedDayOfWeek = state.currentDate.getDay();
+
+            const dayTodos = state.todos.filter(todo => {
+                const taskDateStr = todo.date || formatDateKey(state.todayDate);
+                if (todo.repeat === 'none') {
+                    return taskDateStr === selectedDateStr;
+                }
+                if (todo.repeat === 'daily') {
+                    return selectedDateStr >= taskDateStr;
+                }
+                if (todo.repeat === 'weekly') {
+                    if (selectedDateStr < taskDateStr) return false;
+                    const createdDate = new Date(taskDateStr.replace(/-/g, '/'));
+                    return createdDate.getDay() === selectedDayOfWeek;
+                }
+                return false;
+            });
+
+            const completedTasks = dayTodos.filter(t => t.completed);
+
+            if (completedTasks.length === 0 && !journalText) {
+                showToast("⚠️ 最低限1つのタスクを完了させるか、日記を記入してください！", "exclamation-circle");
+                return;
+            }
+
+            const loader = document.getElementById('ai-loader');
+            const feedbackResult = document.getElementById('ai-feedback-result');
+
+            loader.classList.remove('hidden');
+            feedbackResult.classList.add('hidden');
+            loader.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            setTimeout(() => {
+                const response = generateMockAiFeedback(completedTasks, journalText);
+                const nowStr = new Date().toLocaleString('ja-JP', { hour12: false });
+                
+                // 💾 データの超軽量化：長文テキストを毎回そのまま保存するのを廃止！
+                // 単にアドバイス文のインデックスID（a,b,c,d）を保持。これで1件のサイズが数KB→数十Bへ激減！
+                state.archive[selectedDateStr] = {
+                    mood: state.selectedMood,
+                    todos: dayTodos.map(t => ({ ...t })), // スナップショットは保持
+                    journal: journalText || "（日記の記入なし。アクションだけで素晴らしい前進です！）",
+                    savedAt: nowStr,
+                    a: response.indexA,
+                    b: response.indexB,
+                    c: response.indexC, // 気分用
+                    d: response.indexD,
+                    tTitle: response.title // 称号だけは変動するので残す
+                };
+
+                localStorage.removeItem(`ai_macaron_draft_${selectedDateStr}`);
+                localStorage.removeItem(`ai_macaron_mood_${selectedDateStr}`);
+
+                const todayKey = formatDateKey(state.todayDate);
+                if (selectedDateStr === todayKey && state.lastSavedDateStr !== todayKey) {
+                    state.streak += 1;
+                    state.lastSavedDateStr = todayKey;
+                }
+
+                saveToLocalStorage();
+                renderCalendar();
+                renderStats();
+                updateStreakDisplay();
+
+                loader.classList.add('hidden');
+                
+                // 生成したデータを画面に直接バインド
+                document.getElementById('feedback-saved-timestamp').textContent = `保存完了: ${nowStr}`;
+                document.getElementById('feedback-title').textContent = response.title;
+                document.getElementById('feedback-body').textContent = response.feedback;
+                feedbackResult.classList.remove('hidden');
+
+                playSound('crown');
+                showToast("👑 成果をカレンダーに保存しました！", "crown");
+                triggerConfettiCelebrate();
+                feedbackResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            }, 1200);
+        }
+
+        // 保存されたAIデータを描画
+        function showSavedAiFeedback(savedData) {
+            const feedbackResult = document.getElementById('ai-feedback-result');
+            
+            // 保存済みのデータから、アドバイス文をその場で逆コンパイルして展開する！
+            const partA = ADVICE_OPENINGS[savedData.a || 0];
+            const partB = (savedData.b !== undefined && savedData.b < ADVICE_TASKS_MANY.length) 
+                ? ADVICE_TASKS_MANY[savedData.b] 
+                : ADVICE_TASKS_FEW[savedData.b || 0];
+            const partC = (savedData.c !== undefined) 
+                ? (ADVICE_MOOD[savedData.mood] || "今日も自分と向き合うその一歩が価値ある前進です。") 
+                : "";
+            const partD = ADVICE_CLOSINGS[savedData.d || 0];
+
+            const reconstructedFeedback = `${partA}\n\n${partB}\n\n${partC}\n\n${partD}`;
+
+            document.getElementById('feedback-saved-timestamp').textContent = `保存完了: ${savedData.savedAt || '不明'}`;
+            document.getElementById('feedback-title').textContent = savedData.tTitle || "🏆 【素晴らしい努力家】";
+            document.getElementById('feedback-body').textContent = reconstructedFeedback;
+            feedbackResult.classList.remove('hidden');
+        }
+
+        // --- 軽量に再設計されたモジュール型フィードバックエミュレータ ---
+        function generateMockAiFeedback(completedTasks, journalText) {
+            let title = "";
+            let feedbackParts = [];
+
+            // 1. タイトルのキーワード判定
+            let foundKeywordTitle = null;
+            for (const key in KEYWORD_TITLES) {
+                if (journalText.includes(key)) {
+                    foundKeywordTitle = KEYWORD_TITLES[key];
+                    break;
+                }
+            }
+
+            if (foundKeywordTitle) {
+                title = foundKeywordTitle;
+            } else if (completedTasks.length > 0) {
+                const randomTaskText = completedTasks[Math.floor(Math.random() * completedTasks.length)].text;
+                const cleanTaskText = randomTaskText.replace(/[🌸🍀⭐🧸🔁🔄📅🕒]/g, "").trim().substring(0, 12);
+                title = `🏆 【「${cleanTaskText}」を制覇せし開拓者】`;
+            } else {
+                const prefix = TITLE_PREFIXES[Math.floor(Math.random() * TITLE_PREFIXES.length)];
+                const suffix = TITLE_SUFFIXES[Math.floor(Math.random() * TITLE_SUFFIXES.length)];
+                title = prefix + suffix;
+            }
+
+            // 2. インデックスIDを算出（ここがメモリ削減の鍵です）
+            const indexA = Math.floor(Math.random() * ADVICE_OPENINGS.length);
+            
+            let indexB = 0;
+            if (completedTasks.length >= 3) {
+                indexB = Math.floor(Math.random() * ADVICE_TASKS_MANY.length);
+            } else {
+                indexB = Math.floor(Math.random() * ADVICE_TASKS_FEW.length);
+            }
+
+            const indexC = 0; // 気分は selectedMood を使うためインデックス不要
+            const indexD = Math.floor(Math.random() * ADVICE_CLOSINGS.length);
+
+            // 3. 表示用の仮の合成文章を構築（保存時はこれをまるごと捨ててIDだけで記憶します）
+            const partA = ADVICE_OPENINGS[indexA];
+            const partB = (completedTasks.length >= 3) ? ADVICE_TASKS_MANY[indexB] : ADVICE_TASKS_FEW[indexB];
+            const partC = ADVICE_MOOD[state.selectedMood] || "";
+            const partD = ADVICE_CLOSINGS[indexD];
+
+            let personalizedB = partB;
+            if (completedTasks.length >= 3 && completedTasks[0]) {
+                personalizedB = `${partB} 特に、目標であった「${completedTasks[0].text}」を見事にクリアした瞬間は素晴らしいハイライトです。`;
+            }
+
+            let personalizedC = partC;
+            if (journalText.length > 5) {
+                personalizedC = `日記に『${journalText.substring(0, 20)}...』と書いてくださったように、自分の心の声と言葉に真摯に向き合う姿勢こそが最高の自己投資です。${partC}`;
+            }
+
+            const feedback = `${partA}\n\n${personalizedB}\n\n${personalizedC}\n\n${partD}`;
+
+            return { title, feedback, indexA, indexB, indexC, indexD };
+        }
+
+        function formatDateKey(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function formatDateString(date) {
+            const days = ['日', '月', '火', '水', '木', '金', '土'];
+            const y = date.getFullYear();
+            const m = date.getMonth() + 1;
+            const d = date.getDate();
+            const dayName = days[date.getDay()];
+            return `${y}年 ${m}月 ${d}日 (${dayName})`;
+        }
+
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        let toastTimeout;
+        function showToast(message, icon = "info") {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toast-icon');
+            const toastMsg = document.getElementById('toast-message');
+
+            if (icon === "plus") toastIcon.innerHTML = `<i class="fa-solid fa-plus text-purple-400"></i>`;
+            else if (icon === "check") toastIcon.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i>`;
+            else if (icon === "trash") toastIcon.innerHTML = `<i class="fa-solid fa-trash-can text-rose-400"></i>`;
+            else if (icon === "crown") toastIcon.innerHTML = `<i class="fa-solid fa-crown text-amber-400"></i>`;
+            else toastIcon.innerHTML = `<i class="fa-solid fa-circle-info text-sky-400"></i>`;
+
+            toastMsg.textContent = message;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function triggerConfettiParticle() {
+            confetti({
+                particleCount: 30,
+                spread: 40,
+                origin: { y: 0.8 },
+                colors: ['#fecdd3', '#bae6fd', '#d9f99d', '#e9d5ff', '#fed7aa']
+            });
+        }
+
+        function triggerConfettiCelebrate() {
+            var duration = 2 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 4,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#fecdd3', '#bae6fd', '#d9f99d', '#e9d5ff', '#fed7aa']
+                });
+                confetti({
+                    particleCount: 4,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#fecdd3', '#bae6fd', '#d9f99d', '#e9d5ff', '#fed7aa']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
 </body>
 </html>
